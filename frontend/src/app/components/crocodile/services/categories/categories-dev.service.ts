@@ -5,54 +5,54 @@ import {Category} from './category.interface';
 
 @Injectable({providedIn: 'root'})
 export class CategoriesDevService extends CategoriesService {
-  override loadCategories(): void {
-    of(categories)
-      .subscribe(items => {
-        this.categories = Array.of<Category>(...items)
-        this.selected = Array.of<Category>(...items)
-      })
-  }
+  // override loadCategories(): void {
+  //   of(categories)
+  //     .subscribe(items => {
+  //       this.categories = Array.of<Category>(...items)
+  //       this.selected = Array.of<Category>(...items)
+  //     })
+  // }
 }
 
 const categories: Category[] = [
   {
-    id: 1,
-    alias: "title-1",
+    title: "title-1",
+    words: [['test', 'test2']]
   },
   {
-    id: 2,
-    alias: "title-2",
+    title: "title-2",
+    words: [[]]
   },
   {
-    id: 3,
-    alias: "title-3",
+    title: "title-3",
+    words: [[]]
   },
   {
-    id: 4,
-    alias: "title-4",
+    title: "title-4",
+    words: [[]]
   },
   {
-    id: 5,
-    alias: "title-5",
+    title: "title-5",
+    words: [[]]
   },
   {
-    id: 6,
-    alias: "title-6",
+    title: "title-6",
+    words: [[]]
   },
   {
-    id: 7,
-    alias: "title-7",
+    title: "title-7",
+    words: [[]]
   },
   {
-    id: 8,
-    alias: "title-8",
+    title: "title-8",
+    words: [[]]
   },
   {
-    id: 9,
-    alias: "title-9",
+    title: "title-9",
+    words: [[]]
   },
   {
-    id: 10,
-    alias: "title-10",
+    title: "title-10",
+    words: [[]]
   }
 ]

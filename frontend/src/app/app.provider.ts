@@ -1,6 +1,9 @@
-import {EnvironmentProviders, Provider, provideZoneChangeDetection} from '@angular/core';
+import {
+  EnvironmentProviders,
+  Provider,
+  provideZoneChangeDetection
+} from '@angular/core';
 import {provideRouter} from '@angular/router';
-
 import {routes} from './app.routes';
 import {appRoutesProvider} from './app.routes.provider';
 import {provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/common/http';

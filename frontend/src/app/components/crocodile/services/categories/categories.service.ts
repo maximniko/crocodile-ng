@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Category} from './category.interface';
 import {BehaviorSubject} from 'rxjs';
-import {environment} from '../../../../../environments/environment';
+import {TwaService} from '../../../../services/telegram/twa.service';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class CategoriesService {
 
   constructor(
-    private http: HttpClient
+    private twa: TwaService,
+    private http: HttpClient,
   ) {
     this.loadCategories()
   }
@@ -35,9 +36,29 @@ export class CategoriesService {
     this._selected = newValue;
   }
 
-  loadCategories(): void {
-    this.http.get<Category[]>(`${environment.apiUrl}/categories`)
-      .subscribe(categories => this.categories = categories)
+  loadCategories() {
+    const locale = this.twa.getUserLanguageCode() ?? 'en'
+
+    this.http.get<Category[]>(`assets/categories/${locale}.json`)
+      .subscribe({
+        next: (items: Category[]) => {
+          this.categories = items
+          this.selected = Array.of<Category>(...items)
+        },
+        error: (e: HttpErrorResponse) => {
+          this.http.get<Category[]>(`assets/categories/ru.json`)
+            .subscribe({
+                next: (items: Category[]) => {
+                  this.categories = items
+                  this.selected = Array.of<Category>(...items)
+                },
+                error: (e) => this.twa.showAlert("Can\'t data for your language"),
+                // complete: () => console.info('complete ru')
+              },
+            )
+        },
+        // complete: () => console.info(`complete ${locale}`)
+      })
   }
 
   toggle(category: Category) {
@@ -52,7 +73,7 @@ export class CategoriesService {
 
   isSelected(category: Category): boolean {
     return this.selected.find(
-      (item: Category) => item.id == category.id
+      (item: Category) => item.title == category.title
     ) !== undefined;
   }
 }
