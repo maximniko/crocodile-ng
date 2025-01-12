@@ -13,9 +13,7 @@ export class CategoriesService {
     this.loadCategories()
   }
 
-  categoriesSubject = new BehaviorSubject<Category[]>([{
-    id: 1, alias: 's'
-  }]);
+  categoriesSubject = new BehaviorSubject<Category[]>([]);
 
   private _categories: Category[] = [];
   private _selected: Category[] = [];
