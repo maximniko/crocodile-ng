@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {routeCreator} from '../../crocodile.routes';
 import {PlayersService} from '../../services/players/players.service';
 import {CategoriesService} from '../../services/categories/categories.service';
@@ -13,6 +13,7 @@ import {
   NgbAccordionHeader,
   NgbAccordionItem
 } from '@ng-bootstrap/ng-bootstrap';
+import {TwaService} from '../../../../services/telegram/twa.service';
 
 @Component({
   standalone: true,
@@ -130,7 +131,7 @@ import {
     NgbAccordionDirective
   ]
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   protected round: number = 1
   protected state: State = State.LOADING // 0 - show next player, 1 - do play, 2 - to play or to results
   private currentPlayerNo = 0
@@ -140,11 +141,18 @@ export class GameComponent implements OnInit {
 
   constructor(
     protected playersService: PlayersService,
+    private twa: TwaService
   ) {
     this.gameWordsProvider = new GameWordsProvider(inject(CategoriesService))
   }
 
   ngOnInit() {
+    this.twa.requestFullscreen()
+    this.initGamePlayers()
+  }
+
+  ngOnDestroy() {
+    this.twa.exitFullscreen()
     this.initGamePlayers()
   }
 
