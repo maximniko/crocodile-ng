@@ -1,4 +1,4 @@
-import {Directive, ElementRef, OnInit} from '@angular/core';
+import {Directive, ElementRef, HostListener, OnInit} from '@angular/core';
 
 @Directive({selector: '[focusOnShow]'})
 export class FocusOnShowDirective implements OnInit {
@@ -6,6 +6,11 @@ export class FocusOnShowDirective implements OnInit {
     if (!el.nativeElement['focus']) {
       throw new Error('Element does not accept focus.');
     }
+  }
+
+  @HostListener('keyup.enter', ['$event'])
+  onEnter(event: KeyboardEvent) {
+    this.el.nativeElement.blur();  // Снимаем фокус с элемента
   }
 
   ngOnInit(): void {

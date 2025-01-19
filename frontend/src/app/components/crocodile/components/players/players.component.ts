@@ -35,8 +35,7 @@ import {routeCreator} from '../../crocodile.routes';
         @for (control of players.controls; track control; let idx = $index) {
           <div class="input-group mb-3">
             <div class="form-floating" formGroupName="{{idx}}">
-              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name"
-                     formControlName="name" (click)="$event.stopPropagation()">
+              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name" formControlName="name" (click)="$event.stopPropagation()">
               <label for="floatingName">Player {{ idx + 1 }}</label>
             </div>
             <span class="input-group-text" (click)="delete(idx)">X</span>
