@@ -23,6 +23,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.twa.ready()
-    // this.twa.requestFullscreen()
+    this.twa.expand()
   }
 }
