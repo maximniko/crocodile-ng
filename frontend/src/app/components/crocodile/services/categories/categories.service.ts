@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Category} from './category.interface';
+import {Category, CompactCategory} from './category.interface';
 import {BehaviorSubject} from 'rxjs';
 import {TwaService} from '../../../../services/telegram/twa.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Word} from '../words/word.interface';
+import {getRandom} from '../../../../extensions/Array';
 
 @Injectable({providedIn: 'root'})
 export class CategoriesService {
@@ -39,18 +41,19 @@ export class CategoriesService {
   loadCategories() {
     const locale = this.twa.getUserLanguageCode() ?? 'en'
 
-    this.http.get<Category[]>(`assets/categories/${locale}.json`)
+    this.http.get<CompactCategory[]>(`assets/categories/${locale}.json`)
       .subscribe({
-        next: (items: Category[]) => {
-          this.categories = items
-          this.selected = Array.of<Category>(...items)
+        next: (items: CompactCategory[]) => {
+          this.categories = this.toCategories(items)
+          this.selected = Array.of<Category>(...this.categories)
         },
         error: (e: HttpErrorResponse) => {
-          this.http.get<Category[]>(`assets/categories/ru.json`)
+          this.http.get<CompactCategory[]>(`assets/categories/ru.json`)
             .subscribe({
-                next: (items: Category[]) => {
-                  this.categories = items
-                  this.selected = Array.of<Category>(...items)
+                next: (items: CompactCategory[]) => {
+                  this.categories = this.toCategories(items)
+                  this.selected = Array.of<Category>(...this.categories)
+                  console.log('Inited selected', this.selected)
                 },
                 error: (e) => this.twa.showAlert("Can\'t data for your language"),
                 // complete: () => console.info('complete ru')
@@ -61,6 +64,22 @@ export class CategoriesService {
       })
   }
 
+  private toCategories(compactCategories: CompactCategory[]): Category[] {
+    return compactCategories.map<Category>((c: CompactCategory) => {
+      return {
+        title: c.title,
+        words: c.words.flatMap<Word>((items: string[], k: number) => {
+          return items.map((v: string) => {
+              return {
+                title: v,
+                level: k + 1
+              }
+            }
+          )
+        })
+      }
+    })
+  }
   toggle(category: Category) {
     const index = this.selected.indexOf(category)
 
@@ -75,5 +94,9 @@ export class CategoriesService {
     return this.selected.find(
       (item: Category) => item.title == category.title
     ) !== undefined;
+  }
+
+  getRandomWord(): Word {
+    return getRandom(getRandom(this.selected).words)
   }
 }

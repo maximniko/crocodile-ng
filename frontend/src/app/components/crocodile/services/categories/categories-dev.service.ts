@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {CategoriesService} from './categories.service';
-import {of} from 'rxjs';
 import {Category} from './category.interface';
 
 @Injectable({providedIn: 'root'})
@@ -17,42 +16,42 @@ export class CategoriesDevService extends CategoriesService {
 const categories: Category[] = [
   {
     title: "title-1",
-    words: [['test', 'test2']]
+    words: []
   },
   {
     title: "title-2",
-    words: [[]]
+    words: []
   },
   {
     title: "title-3",
-    words: [[]]
+    words: []
   },
   {
     title: "title-4",
-    words: [[]]
+    words: []
   },
   {
     title: "title-5",
-    words: [[]]
+    words: []
   },
   {
     title: "title-6",
-    words: [[]]
+    words: []
   },
   {
     title: "title-7",
-    words: [[]]
+    words: []
   },
   {
     title: "title-8",
-    words: [[]]
+    words: []
   },
   {
     title: "title-9",
-    words: [[]]
+    words: []
   },
   {
     title: "title-10",
-    words: [[]]
+    words: []
   }
 ]

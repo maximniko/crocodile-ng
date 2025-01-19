@@ -1,3 +1,4 @@
 export interface Player {
-  name: string
+  name: string,
+  words: string,
 }
