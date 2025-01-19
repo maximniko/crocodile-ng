@@ -1,10 +1,15 @@
 import {Component, inject, signal, TemplateRef, WritableSignal} from '@angular/core';
 import {NgbOffcanvas, OffcanvasDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {RouterLink} from '@angular/router';
+import {routeCreator} from '../../crocodile/crocodile.routes';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
+  imports: [
+    RouterLink
+  ]
 })
 export class HeaderComponent {
   private offcanvasService = inject(NgbOffcanvas);
@@ -37,4 +42,6 @@ export class HeaderComponent {
         return `with: ${reason}`;
     }
   }
+
+  protected readonly routeCreator = routeCreator;
 }
