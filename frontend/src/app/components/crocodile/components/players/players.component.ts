@@ -19,22 +19,29 @@ import {routeCreator} from '../../crocodile.routes';
   standalone: true,
   template: `
     <div class="text-center h3 my-3">Игроки</div>
-    <button class="btn btn-lg btn-outline-primary" (click)="addPlayer()">Add</button>
+    <div class="row row-cols-2 g-2">
+      <div class="col">
+        <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">Reset</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-lg btn-outline-success w-100" type="submit" [disabled]="form!.invalid" (click)="onSubmit()">Save</button>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-lg btn-outline-primary w-100" (click)="addPlayer()">Add</button>
+      </div>
+    </div>
     <form [formGroup]="form!">
       <div formArrayName="players" class="d-flex flex-column-reverse">
         @for (control of players.controls; track control; let idx = $index) {
           <div class="input-group mb-3">
             <div class="form-floating" formGroupName="{{idx}}">
-              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name" formControlName="name">
-              <label for="floatingName">Player {{idx + 1}}</label>
+              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name"
+                     formControlName="name" (click)="$event.stopPropagation()">
+              <label for="floatingName">Player {{ idx + 1 }}</label>
             </div>
-            <button class="input-group-text" (click)="deleteLesson(idx)">X</button>
+            <span class="input-group-text" (click)="delete(idx)">X</span>
           </div>
         }
-      </div>
-      <div class="d-flex g-2">
-        <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">Reset</button>
-        <button class="btn btn-lg btn-outline-success w-100" type="submit" [disabled]="form!.invalid" (click)="onSubmit()">Save</button>
       </div>
     </form>
   `,
@@ -80,8 +87,8 @@ export class PlayersComponent implements OnInit, OnDestroy {
     this.players.push(this.playerGroup(player));
   }
 
-  protected deleteLesson(lessonIndex: number) {
-    this.players.removeAt(lessonIndex);
+  protected delete(index: number) {
+    this.players.removeAt(index);
   }
 
   protected reset() {
@@ -95,7 +102,6 @@ export class PlayersComponent implements OnInit, OnDestroy {
   }
 
   private makeForm(players?: Player[]): FormGroup {
-    console.log(this.formBuilder);
     return this.formBuilder.group({
       players: this.formBuilder.array(
         players?.length ? players.map((item: Player) => this.playerGroup(item)) : [this.playerGroup()],

@@ -1,21 +1,7 @@
-<nav class="navbar navbar-dark bg-dark" aria-label="Dark offcanvas navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="routeCreator.main()">Dark offcanvas navbar</a>
-    <button class="navbar-toggler" (click)="open(content)">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="routeCreator.main()">Crocodile</a>
   </div>
 </nav>
 
-<ng-template #content let-offcanvas>
-  <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvas-basic-title">Profile update</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="text-end">
-      <button type="button" class="btn btn-outline-secondary" (click)="offcanvas.close('Save click')">Save</button>
-    </div>
-  </div>
-</ng-template>
 <!--<pre>{{ closeResult() }}</pre>-->
