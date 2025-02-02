@@ -14,6 +14,7 @@ import {
   NgbAccordionItem
 } from '@ng-bootstrap/ng-bootstrap';
 import {TwaService} from '../../../../services/telegram/twa.service';
+import {SoundService} from '../../../../services/sound.service';
 
 @Component({
   standalone: true,
@@ -141,7 +142,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     protected playersService: PlayersService,
-    private twa: TwaService
+    private twa: TwaService,
+    private sound: SoundService,
   ) {
     this.gameWordsProvider = new GameWordsProvider(inject(CategoriesService))
   }
@@ -206,10 +208,13 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (notExists) {
       this.gamePlayers[this.currentPlayerNo].successWords.push(word)
+      this.twa.hapticFeedbackImpactOccurred("soft")
+      this.sound.playOn()
     } else {
       this.gamePlayers[this.currentPlayerNo].successWords.splice(index, 1)
+      this.twa.hapticFeedbackImpactOccurred("heavy")
+      this.sound.playOff()
     }
-    this.twa.hapticFeedbackImpactOccurred(notExists ? "soft" : "heavy")
   }
 
   protected isWordSelected(word: Word) {
