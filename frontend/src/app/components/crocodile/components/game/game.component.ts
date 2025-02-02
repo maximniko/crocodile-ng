@@ -208,11 +208,11 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (notExists) {
       this.gamePlayers[this.currentPlayerNo].successWords.push(word)
-      this.twa.hapticFeedbackImpactOccurred("soft")
+      this.twa.hapticFeedbackNotificationOccurred("success")
       this.sound.playOn()
     } else {
       this.gamePlayers[this.currentPlayerNo].successWords.splice(index, 1)
-      this.twa.hapticFeedbackImpactOccurred("heavy")
+      this.twa.hapticFeedbackNotificationOccurred("warning")
       this.sound.playOff()
     }
   }
