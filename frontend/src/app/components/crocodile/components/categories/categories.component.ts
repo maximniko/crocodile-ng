@@ -1,6 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {CategoriesService} from '../../services/categories/categories.service';
+import {TwaService} from '../../../../services/telegram/twa.service';
+import {Category} from '../../services/categories/category.interface';
 
 @Component({
   standalone: true,
@@ -10,7 +12,7 @@ import {CategoriesService} from '../../services/categories/categories.service';
       <button class="d-flex btn btn-lg" [ngClass]="{
           'btn-success': selected,
           'btn-secondary': !selected,
-      }" (click)="categories.toggle(item)">
+      }" (click)="toggle(item)">
         <div class="my-auto">{{ idx + 1 }}</div>
         <div class="m-auto">{{ item.title }}</div>
       </button>
@@ -19,16 +21,18 @@ import {CategoriesService} from '../../services/categories/categories.service';
   host: {class: 'd-flex flex-column gap-1'},
   imports: [NgClass, AsyncPipe]
 })
-export class CategoriesComponent implements OnInit, OnDestroy {
+export class CategoriesComponent {
 
   constructor(
-    protected categories: CategoriesService
+    protected categories: CategoriesService,
+    private twa: TwaService,
   ) {
   }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
+  toggle(item: Category) {
+    this.twa.hapticFeedbackImpactOccurred(
+      this.categories.isSelected(item) ? "soft" : "heavy"
+    )
+    this.categories.toggle(item)
   }
 }

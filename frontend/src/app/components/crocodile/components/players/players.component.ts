@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -9,7 +9,6 @@ import {
   Validators
 } from '@angular/forms';
 import {PlayersService} from '../../services/players/players.service';
-import {Subscription} from 'rxjs';
 import {Player} from '../../services/players/player.interface';
 import {FocusOnShowDirective} from '../../../../directives/focus-on-show.directive';
 import {Router} from '@angular/router';
@@ -47,10 +46,9 @@ import {routeCreator} from '../../crocodile.routes';
   host: {class: 'd-flex flex-column gap-2'},
   imports: [ReactiveFormsModule, FocusOnShowDirective],
 })
-export class PlayersComponent implements OnInit, OnDestroy {
+export class PlayersComponent {
 
   protected form!: FormGroup;
-  protected playerSubscription?: Subscription;
   protected startPlayers: Player[] = [];
 
   constructor(
@@ -60,22 +58,6 @@ export class PlayersComponent implements OnInit, OnDestroy {
   ) {
     this.startPlayers = this.playersService.players
     this.form = this.makeForm(this.startPlayers)
-  }
-
-  ngOnInit(): void {
-    this.playerSubscription = this.playersService.playersSubject
-      .subscribe((players: Player[]) => {
-        if (players.length === 0) {
-          return
-        }
-        if (JSON.stringify(players) !== JSON.stringify(this.startPlayers)) {
-          this.goBack();
-        }
-      })
-  }
-
-  ngOnDestroy() {
-    this.playerSubscription?.unsubscribe()
   }
 
   protected get players() {
@@ -96,8 +78,12 @@ export class PlayersComponent implements OnInit, OnDestroy {
   }
 
   protected onSubmit() {
+    if (this.form.invalid) {
+      return
+    }
     const players = this.form?.get('players')?.value as Player[]
     this.playersService.savePlayers(players)
+    this.goBack()
   }
 
   private makeForm(players?: Player[]): FormGroup {

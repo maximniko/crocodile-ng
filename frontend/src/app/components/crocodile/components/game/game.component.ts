@@ -201,13 +201,15 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   protected toggleWord(word: Word) {
-    const index = this.gamePlayers[this.currentPlayerNo].successWords.indexOf(word)
+    const index = this.gamePlayers[this.currentPlayerNo].successWords.indexOf(word),
+      notExists = index == -1
 
-    if (index == -1) {
+    if (notExists) {
       this.gamePlayers[this.currentPlayerNo].successWords.push(word)
     } else {
       this.gamePlayers[this.currentPlayerNo].successWords.splice(index, 1)
     }
+    this.twa.hapticFeedbackImpactOccurred(notExists ? "soft" : "heavy")
   }
 
   protected isWordSelected(word: Word) {
