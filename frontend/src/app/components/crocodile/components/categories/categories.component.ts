@@ -30,8 +30,8 @@ export class CategoriesComponent {
   }
 
   toggle(item: Category) {
-    this.twa.hapticFeedbackImpactOccurred(
-      this.categories.isSelected(item) ? "soft" : "heavy"
+    this.twa.hapticFeedbackNotificationOccurred(
+      this.categories.isSelected(item) ? "success" : "warning"
     )
     this.categories.toggle(item)
   }
