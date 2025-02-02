@@ -138,14 +138,22 @@ export class TwaService {
   }
 
   requestFullscreen() {
-    if (!WebApp.isFullscreen && typeof WebApp.requestFullscreen !== undefined) {
-      WebApp.requestFullscreen()
+    try {
+      if (!WebApp.isFullscreen && typeof WebApp.requestFullscreen !== undefined) {
+        WebApp.requestFullscreen()
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
   exitFullscreen() {
-    if (WebApp.isFullscreen && typeof WebApp.exitFullscreen !== undefined) {
-      WebApp.exitFullscreen()
+    try {
+      if (WebApp.isFullscreen && typeof WebApp.exitFullscreen !== undefined) {
+        WebApp.exitFullscreen()
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 }
