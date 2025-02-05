@@ -40,7 +40,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.twa.offMainButton(this.goBack)
-    this.twa.offBackButton(this.goBack)
+    this.twa.offBackButton(this.goBack, false)
   }
 
   goBack(): void {
