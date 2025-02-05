@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
 import {PlayersService} from '../../services/players/players.service';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {CategoriesService} from '../../services/categories/categories.service';
+import {TwaService} from '../../../../services/telegram/twa.service';
 
 @Component({
   standalone: true,
@@ -64,11 +65,16 @@ import {CategoriesService} from '../../services/categories/categories.service';
   host: {class: 'd-flex flex-column gap-5'},
   imports: [RouterLink, NgClass, AsyncPipe]
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   constructor(
+    protected twa: TwaService,
     protected playersService: PlayersService,
     protected categoriesService: CategoriesService,
   ) {
+  }
+
+  ngOnInit() {
+    this.twa.visibleBackButton(false)
   }
 
   protected emptyPlayers(): boolean {
