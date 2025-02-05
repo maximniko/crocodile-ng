@@ -27,7 +27,7 @@ import {SoundService} from '../../../../services/sound.service';
       color: #e4e4e4;
     }
 
-    .text-blonze {
+    .text-bronze {
       color: #cda132;
     }
   `,
@@ -74,21 +74,16 @@ import {SoundService} from '../../../../services/sound.service';
           <div ngbAccordionItem>
             <h2 ngbAccordionHeader>
               <button ngbAccordionButton>
-                <div class="d-flex w-100">
-                  @let starsCount = 3 - idx;
-                  <span class="ms-2 me-auto" [ngClass]="{
+                @let starsCount = 3 - idx;
+                <div class="d-flex w-100" [ngClass]="{
                   'text-gold': starsCount == 3,
                   'text-silver': starsCount == 2,
                   'text-bronze': starsCount == 1,
                   'text-secondary': starsCount < 1,
-                  }"><b>{{ gamePlayerResult.gamePlayer.player.name }}</b></span>
+                  }">
+                  <span class="ms-2 me-auto"><b>{{ gamePlayerResult.gamePlayer.player.name }}</b></span>
                   <div>
-                    <span class="me-2" [ngClass]="{
-                  'text-gold': starsCount == 3,
-                  'text-silver': starsCount == 2,
-                  'text-bronze': starsCount == 1,
-                  'text-secondary': starsCount < 1,
-                  }" [innerHTML]="stars(starsCount)"></span>
+                    <span class="me-2" [innerHTML]="stars(starsCount)"></span>
                     <span class="badge text-bg-danger rounded-pill">{{ gamePlayerResult.sum }}</span>
                   </div>
                 </div>
