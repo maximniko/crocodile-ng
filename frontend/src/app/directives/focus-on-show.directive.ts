@@ -13,6 +13,11 @@ export class FocusOnShowDirective implements OnInit {
     this.el.nativeElement.blur();  // Снимаем фокус с элемента
   }
 
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent) {
+    this.el.nativeElement.blur();  // Снимаем фокус с элемента
+  }
+
   ngOnInit(): void {
     const input: HTMLInputElement = this.el.nativeElement as HTMLInputElement;
     input.focus();
