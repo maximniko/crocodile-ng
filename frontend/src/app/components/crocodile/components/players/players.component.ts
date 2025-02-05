@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -13,6 +13,7 @@ import {Player} from '../../services/players/player.interface';
 import {FocusOnShowDirective} from '../../../../directives/focus-on-show.directive';
 import {Router} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
+import {TwaService} from '../../../../services/telegram/twa.service';
 
 @Component({
   standalone: true,
@@ -23,7 +24,9 @@ import {routeCreator} from '../../crocodile.routes';
         <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">Reset</button>
       </div>
       <div class="col">
-        <button class="btn btn-lg btn-outline-success w-100" type="submit" [disabled]="form!.invalid" (click)="onSubmit()">Save</button>
+        <button class="btn btn-lg btn-outline-success w-100" type="submit" [disabled]="form!.invalid"
+                (click)="onSubmit()">Save
+        </button>
       </div>
       <div class="col-12">
         <button class="btn btn-lg btn-outline-primary w-100" (click)="addPlayer()">Add</button>
@@ -34,7 +37,8 @@ import {routeCreator} from '../../crocodile.routes';
         @for (control of players.controls; track control; let idx = $index) {
           <div class="input-group mb-3">
             <div class="form-floating" formGroupName="{{idx}}">
-              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name" formControlName="name" (click)="$event.stopPropagation()">
+              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name"
+                     formControlName="name" (click)="$event.stopPropagation()">
               <label for="floatingName">Player {{ idx + 1 }}</label>
             </div>
             <span class="input-group-text" (click)="delete(idx)">X</span>
@@ -43,11 +47,10 @@ import {routeCreator} from '../../crocodile.routes';
       </div>
     </form>
   `,
-  host: {class: 'd-flex flex-column gap-2'},
+  host: {class: 'd-flex flex-column gap-2 pb-5'},
   imports: [ReactiveFormsModule, FocusOnShowDirective],
 })
-export class PlayersComponent {
-
+export class PlayersComponent implements OnInit, OnDestroy {
   protected form!: FormGroup;
   protected startPlayers: Player[] = [];
 
@@ -55,9 +58,18 @@ export class PlayersComponent {
     protected formBuilder: FormBuilder,
     protected playersService: PlayersService,
     private router: Router,
+    private twa: TwaService,
   ) {
     this.startPlayers = this.playersService.players
     this.form = this.makeForm(this.startPlayers)
+  }
+
+  ngOnInit() {
+    this.twa.requestFullscreen()
+  }
+
+  ngOnDestroy() {
+    this.twa.exitFullscreen()
   }
 
   protected get players() {
@@ -138,7 +150,7 @@ export class PlayersComponent {
       if (control.value.length >= min)
         return null;
 
-      return { minLengthArray: true};
+      return {minLengthArray: true};
     }
   }
 
