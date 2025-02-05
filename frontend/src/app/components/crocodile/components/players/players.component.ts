@@ -37,7 +37,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
         @for (control of players.controls; track control; let idx = $index) {
           <div class="input-group mb-3">
             <div class="form-floating" formGroupName="{{idx}}">
-              <input focusOnShow type="text" class="form-control" id="floatingName" placeholder="Name"
+              <input focusOnShow autocapitalize="none" type="text" class="form-control" id="floatingName" placeholder="Name"
                      formControlName="name" (click)="$event.stopPropagation()">
               <label for="floatingName">Player {{ idx + 1 }}</label>
             </div>
