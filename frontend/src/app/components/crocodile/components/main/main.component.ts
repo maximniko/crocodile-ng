@@ -5,6 +5,7 @@ import {PlayersService} from '../../services/players/players.service';
 import {AsyncPipe, NgClass} from '@angular/common';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {TwaService} from '../../../../services/telegram/twa.service';
+import {Localisation} from '../../../../services/localisation';
 
 @Component({
   standalone: true,
@@ -16,7 +17,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
     }">
       <div class="d-flex justify-content-center w-100">
         <div class="m-auto">
-          Шаг 1
+          {{ l.messages.Step ?? 'Step' }} 1
         </div>
       </div>
       <div class="d-flex justify-content-center w-100">
@@ -24,7 +25,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
         'btn-outline-primary': !emptyPlayers,
         'btn-outline-success': emptyPlayers,
         }">
-          Игроки
+          {{ l.messages.Players ?? 'Players' }}
           @let items = this.playersService.playersSubject | async;
           @if (items?.length) {
             <span class="badge text-bg-primary">{{ items?.length }}</span>
@@ -38,16 +39,14 @@ import {TwaService} from '../../../../services/telegram/twa.service';
         'text-primary': !emptySelectedCategories,
     }">
       <div class="d-flex justify-content-center w-100">
-        <div class="m-auto">
-          Шаг 2
-        </div>
+        <div class="m-auto">{{ l.messages.Step ?? 'Step' }} 2</div>
       </div>
       <div class="d-flex justify-content-center w-100">
         <a [routerLink]="routeCreator.categories()" class="btn btn-lg" [ngClass]="{
         'btn-outline-primary': !this.emptySelectedCategories(),
         'btn-outline-success': this.emptySelectedCategories(),
         }">
-          Категории
+          {{ l.messages.Categories ?? 'Categories' }}
           @if (this.categoriesService.selected.length) {
             <span class="badge text-bg-primary">{{ this.categoriesService.selected.length }}</span>
           }
@@ -59,7 +58,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
       <a class="btn w-100" [routerLink]="routeCreator.game()" [ngClass]="{
           'disabled btn-outline-secondary': !canPlay,
           'btn-lg btn-outline-success': canPlay,
-      }">Play</a>
+      }">{{ l.messages.Play ?? 'Play' }}</a>
     </div>
   `,
   host: {class: 'd-flex flex-column gap-5'},
@@ -68,6 +67,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
 export class MainComponent implements OnInit {
   constructor(
     protected twa: TwaService,
+    protected l: Localisation,
     protected playersService: PlayersService,
     protected categoriesService: CategoriesService,
   ) {

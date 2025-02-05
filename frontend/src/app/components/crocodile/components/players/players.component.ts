@@ -14,22 +14,23 @@ import {FocusOnShowDirective} from '../../../../directives/focus-on-show.directi
 import {Router} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
 import {TwaService} from '../../../../services/telegram/twa.service';
+import {Localisation} from '../../../../services/localisation';
 
 @Component({
   standalone: true,
   template: `
-    <div class="text-center h3 my-3">Игроки</div>
+    <div class="text-center h3 my-3">{{ l.messages.Players ?? 'Players' }}</div>
     <div class="row row-cols-2 g-2">
       <div class="col">
-        <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">Reset</button>
+        <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">{{ l.messages.Reset ?? 'Reset' }}</button>
       </div>
       <div class="col">
         <button class="btn btn-lg btn-outline-success w-100" type="submit" [disabled]="form!.invalid"
-                (click)="onSubmit()">Save
+                (click)="onSubmit()">{{ l.messages.Save ?? 'Save' }}
         </button>
       </div>
       <div class="col-12">
-        <button class="btn btn-lg btn-outline-primary w-100" (click)="addPlayer()">Add</button>
+        <button class="btn btn-lg btn-outline-primary w-100" (click)="addPlayer()">{{ l.messages.Add ?? 'Add' }}</button>
       </div>
     </div>
     <form [formGroup]="form!">
@@ -37,9 +38,9 @@ import {TwaService} from '../../../../services/telegram/twa.service';
         @for (control of players.controls; track control; let idx = $index) {
           <div class="input-group mb-3">
             <div class="form-floating" formGroupName="{{idx}}">
-              <input focusOnShow autocapitalize="none" type="text" class="form-control" id="floatingName" placeholder="Name"
+              <input focusOnShow autocapitalize="none" type="text" class="form-control" id="floatingName" placeholder="{{ l.messages.Player ?? 'Player' }} {{ idx + 1 }}"
                      formControlName="name" (click)="$event.stopPropagation()">
-              <label for="floatingName">Player {{ idx + 1 }}</label>
+              <label for="floatingName">{{ l.messages.Player ?? 'Player' }} {{ idx + 1 }}</label>
             </div>
             <span class="input-group-text" (click)="delete(idx)">X</span>
           </div>
@@ -57,6 +58,7 @@ export class PlayersComponent implements OnInit, OnDestroy {
   constructor(
     protected formBuilder: FormBuilder,
     protected playersService: PlayersService,
+    protected l: Localisation,
     private router: Router,
     private twa: TwaService,
   ) {

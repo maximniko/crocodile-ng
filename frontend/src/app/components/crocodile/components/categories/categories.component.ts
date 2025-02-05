@@ -5,6 +5,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
 import {Category} from '../../services/categories/category.interface';
 import {Router} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
+import {Localisation} from '../../../../services/localisation';
 
 @Component({
   standalone: true,
@@ -29,12 +30,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     protected categories: CategoriesService,
     private twa: TwaService,
     private router: Router,
+    protected l: Localisation,
   ) {
     this.goBack = this.goBack.bind(this)
   }
 
   ngOnInit(): void {
-    this.twa.setMainButton({text: 'Сохранить', is_active: true, is_visible: true}, this.goBack)
+    this.twa.setMainButton({text: this.l.messages.Save ?? 'Save', is_active: true, is_visible: true}, this.goBack)
     this.twa.backButtonOnClick(this.goBack)
   }
 
@@ -53,5 +55,4 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     )
     this.categories.toggle(item)
   }
-
 }

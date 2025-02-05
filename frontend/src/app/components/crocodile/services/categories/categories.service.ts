@@ -48,14 +48,13 @@ export class CategoriesService {
           this.selected = Array.of<Category>(...this.categories)
         },
         error: (e: HttpErrorResponse) => {
-          this.http.get<CompactCategory[]>(`assets/categories/ru.json`)
+          this.http.get<CompactCategory[]>(`assets/categories/en.json`)
             .subscribe({
                 next: (items: CompactCategory[]) => {
                   this.categories = this.toCategories(items)
                   this.selected = Array.of<Category>(...this.categories)
-                  console.log('Inited selected', this.selected)
                 },
-                error: (e) => this.twa.showAlert("Can\'t data for your language"),
+                error: (e) => this.twa.showAlert("Can\'t find data for your language. Available languages de, en, fr, pt, ru."),
                 // complete: () => console.info('complete ru')
               },
             )

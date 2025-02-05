@@ -10,6 +10,7 @@ import {provideHttpClient, withFetch, withInterceptorsFromDi} from '@angular/com
 import {crocodileProviders} from './components/crocodile/crocodile.provider';
 import {firstValueFrom} from 'rxjs';
 import {CategoriesService} from './components/crocodile/services/categories/categories.service';
+import {Localisation} from './services/localisation';
 
 export const providers: Array<Provider | EnvironmentProviders> = [
   provideZoneChangeDetection({eventCoalescing: true}),
@@ -19,5 +20,8 @@ export const providers: Array<Provider | EnvironmentProviders> = [
   ...crocodileProviders,
   provideAppInitializer(() => {
     return firstValueFrom(inject(CategoriesService).categoriesSubject);
+  }),
+  provideAppInitializer(() => {
+    return firstValueFrom(inject(Localisation).loaded);
   }),
 ];

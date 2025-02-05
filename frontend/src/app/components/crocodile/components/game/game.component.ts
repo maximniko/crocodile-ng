@@ -15,6 +15,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import {TwaService} from '../../../../services/telegram/twa.service';
 import {SoundService} from '../../../../services/sound.service';
+import {Localisation} from '../../../../services/localisation';
 
 @Component({
   standalone: true,
@@ -33,13 +34,13 @@ import {SoundService} from '../../../../services/sound.service';
   `,
   template: `
     @if (state == State.LOADING) {
-      Loading
+      {{ l.messages.Loading ?? 'Loading' }}
     } @else if (state == State.NEXT_PLAYER) {
-      <h2 class="text-center">Следующий игрок</h2>
+      <h2 class="text-center">{{ l.messages.NextPlayer ?? 'Next player' }}</h2>
       <h1 class="text-center">{{ currentPlayer.name }}</h1>
-      <button class="btn btn-lg btn-warning d-inline-flex" (click)="playing()">Старт!</button>
+      <button class="btn btn-lg btn-warning d-inline-flex" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
     } @else if (state == State.PLAYING) {
-      <h1 class="text-center">{{ currentPlayer.name }}, показывай</h1>
+      <h1 class="text-center">{{ currentPlayer.name }}, {{ l.messages.show ?? 'show' }}</h1>
       <div class="d-flex flex-column gap-1 h-100">
         @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
           @let isSelected = isWordSelected(word);
@@ -57,16 +58,16 @@ import {SoundService} from '../../../../services/sound.service';
       <button class="overflow-hidden btn btn-lg btn-warning"
               (click)="isLastPlayer ? endRound() : nextPlayer()">
         @if (isLastPlayer) {
-          Раунд!
+          {{ l.messages.Round ?? 'Round!' }}
         } @else {
-          След игрок!
+          {{ l.messages.NextPlayer ?? 'Next player!' }}
         }
       </button>
     } @else if (state == State.END_ROUND) {
-      Раунд {{ round }} завершен!
+      {{ l.messages.RoundEnded ?? 'Round ended!' }}
       <div class="d-flex">
-        <button class="btn btn-lg btn-outline-primary" (click)="toResult()">Смотреть результаты!</button>
-        <button class="btn btn-lg btn-success" (click)="nextPlayer()">Играть ещё!</button>
+        <button class="btn btn-lg btn-outline-primary" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
+        <button class="btn btn-lg btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
       <div ngbAccordion>
@@ -110,8 +111,8 @@ import {SoundService} from '../../../../services/sound.service';
         }
       </div>
       <div class="d-flex">
-        <a class="btn btn-lg btn-outline-primary w-100" [routerLink]="routeCreator.main()">На главную</a>
-        <button class="btn btn-lg btn-success w-100" (click)="nextPlayer()">Играть ещё!</button>
+        <a class="btn btn-lg btn-outline-primary w-100" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
+        <button class="btn btn-lg btn-success w-100" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     }
   `,
@@ -140,6 +141,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private twa: TwaService,
     private sound: SoundService,
     private router: Router,
+    protected l: Localisation
   ) {
     this.goBack = this.goBack.bind(this)
     this.gameWordsProvider = new GameWordsProvider(inject(CategoriesService))
