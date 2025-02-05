@@ -5,7 +5,7 @@ import {CategoriesService} from '../../services/categories/categories.service';
 import {Player} from '../../services/players/player.interface';
 import {NgClass} from '@angular/common';
 import {Word} from '../../services/words/word.interface';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {
   NgbAccordionBody,
   NgbAccordionButton,
@@ -144,18 +144,26 @@ export class GameComponent implements OnInit, OnDestroy {
     protected playersService: PlayersService,
     private twa: TwaService,
     private sound: SoundService,
+    private router: Router,
   ) {
+    this.goBack = this.goBack.bind(this)
     this.gameWordsProvider = new GameWordsProvider(inject(CategoriesService))
   }
 
   ngOnInit() {
     this.twa.requestFullscreen()
+    this.twa.backButtonOnClick(this.goBack)
     this.initGamePlayers()
   }
 
   ngOnDestroy() {
     this.twa.exitFullscreen()
+    this.twa.offBackButton(this.goBack)
     this.initGamePlayers()
+  }
+
+  goBack(): void {
+    this.router.navigate([routeCreator.main()])
   }
 
   protected isLastPlayerInRound(): boolean {
@@ -191,7 +199,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   protected endRound() {
     this.state = State.END_ROUND
-    console.log(this.gamePlayers)
   }
 
   protected get currentPlayer(): Player {
