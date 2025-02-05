@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -50,7 +50,7 @@ import {TwaService} from '../../../../services/telegram/twa.service';
   host: {class: 'd-flex flex-column gap-2 pb-5'},
   imports: [ReactiveFormsModule, FocusOnShowDirective],
 })
-export class PlayersComponent implements OnInit, OnDestroy {
+export class PlayersComponent {
   protected form!: FormGroup;
   protected startPlayers: Player[] = [];
 
@@ -58,18 +58,9 @@ export class PlayersComponent implements OnInit, OnDestroy {
     protected formBuilder: FormBuilder,
     protected playersService: PlayersService,
     private router: Router,
-    private twa: TwaService,
   ) {
     this.startPlayers = this.playersService.players
     this.form = this.makeForm(this.startPlayers)
-  }
-
-  ngOnInit() {
-    this.twa.requestFullscreen()
-  }
-
-  ngOnDestroy() {
-    this.twa.exitFullscreen()
   }
 
   protected get players() {
