@@ -1,22 +1,22 @@
 import {Routes} from '@angular/router';
 
 const ROUTE_PARTS = {
-  crocodile: 'crocodile',
+  croco: 'croco',
   main: 'main',
   categories: 'categories',
   players: 'players',
   game: 'game',
 }
 export const routeCreator = {
-  main: () => `/${ROUTE_PARTS.crocodile}/${ROUTE_PARTS.main}`,
-  categories: () => `/${ROUTE_PARTS.crocodile}/${ROUTE_PARTS.categories}`,
-  players: () => `/${ROUTE_PARTS.crocodile}/${ROUTE_PARTS.players}`,
-  game: () => `/${ROUTE_PARTS.crocodile}/${ROUTE_PARTS.game}`,
+  main: () => `/${ROUTE_PARTS.croco}/${ROUTE_PARTS.main}`,
+  categories: () => `/${ROUTE_PARTS.croco}/${ROUTE_PARTS.categories}`,
+  players: () => `/${ROUTE_PARTS.croco}/${ROUTE_PARTS.players}`,
+  game: () => `/${ROUTE_PARTS.croco}/${ROUTE_PARTS.game}`,
 }
 
 export const crocodileRoutes: Routes = [
   {
-    path: ROUTE_PARTS.crocodile,
+    path: ROUTE_PARTS.croco,
     children: [
       {
         path: ROUTE_PARTS.main,
