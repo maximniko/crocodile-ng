@@ -70,7 +70,7 @@ export class PlayersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.twa.offBackButton(this.goBack)
+    this.twa.offBackButton(this.goBack, false)
   }
 
   goBack(): void {

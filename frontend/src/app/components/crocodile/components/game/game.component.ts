@@ -153,7 +153,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.twa.exitFullscreen()
-    this.twa.offBackButton(this.goBack)
+    this.twa.offBackButton(this.goBack, false)
     this.initGamePlayers()
   }
 
