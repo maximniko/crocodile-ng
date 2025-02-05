@@ -134,7 +134,7 @@ export class PlayersComponent implements OnInit, OnDestroy {
       for (let i = 0; i <= this.players.controls.length; i++) {
         const value = this.players.controls[i]?.get(key)?.value
         if (value) {
-          skills.push(value)
+          skills.push((value as string).trim().toLowerCase())
         }
       }
 
