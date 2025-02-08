@@ -13,7 +13,7 @@ import {Localisation} from '../../../../services/localisation';
     @let emptyPlayers = this.emptyPlayers();
     <div class="vstack" [ngClass]="{
         'alert alert-success mb-0 text-success': emptyPlayers,
-        'tg-color-accent': !emptyPlayers,
+        'text-primary': !emptyPlayers,
     }">
       @if (emptyPlayers) {
         <div class="d-flex justify-content-center">
@@ -28,7 +28,7 @@ import {Localisation} from '../../../../services/localisation';
         </div>
         <div class="d-flex justify-content-center">
           <a [routerLink]="routeCreator.players()" class="btn btn-lg" [ngClass]="{
-        'tg-btn-outline': !emptyPlayers,
+        'btn-outline-primary': !emptyPlayers,
         'btn-outline-success': emptyPlayers,
         }">
             {{ l.messages.Players ?? 'Players' }}
@@ -36,7 +36,7 @@ import {Localisation} from '../../../../services/localisation';
             @if (items?.length) {
               <span class="badge" [ngClass]="{
                 'text-bg-success': emptyPlayers,
-                'tg-btn': !emptyPlayers,
+                'text-bg-primary': !emptyPlayers,
                 }">{{ items?.length }}</span>
             }
           </a>
@@ -46,7 +46,7 @@ import {Localisation} from '../../../../services/localisation';
     @let emptySelectedCategories = this.emptySelectedCategories();
     <div class="vstack" [ngClass]="{
         'alert alert-success mb-0 text-success': emptySelectedCategories,
-        'tg-color-accent': !emptySelectedCategories,
+        'text-primary': !emptySelectedCategories,
     }">
       @if (emptySelectedCategories) {
         <div class="d-flex justify-content-center">
@@ -55,20 +55,20 @@ import {Localisation} from '../../../../services/localisation';
       }
       <div class="d-flex justify-content-around flex-row-reverse">
         <div class="d-flex me-3">
-          <div class="m-auto tg-color-accent">
+          <div class="m-auto text-primary">
             {{ l.messages.Step ?? 'Step' }} 2
           </div>
         </div>
         <div class="d-flex justify-content-center">
           <a [routerLink]="routeCreator.categories()" class="btn btn-lg" [ngClass]="{
-        'tg-btn-outline': !emptySelectedCategories,
+        'btn-outline-primary': !emptySelectedCategories,
         'btn-outline-success': emptySelectedCategories,
         }">
             {{ l.messages.Categories ?? 'Categories' }}
             @if (this.categoriesService.selected.length) {
               <span class="badge" [ngClass]="{
                 'text-bg-success': emptySelectedCategories,
-                'tg-btn': !emptySelectedCategories,
+                'text-bg-primary': !emptySelectedCategories,
                 }">{{ this.categoriesService.selected.length }}</span>
             }
           </a>
@@ -79,7 +79,7 @@ import {Localisation} from '../../../../services/localisation';
     <div class="d-flex justify-content-center">
       <a class="btn rounded-5 w-75" [routerLink]="routeCreator.game()" [ngClass]="{
           'disabled btn-outline-secondary': !canPlay,
-          'btn-lg tg-btn': canPlay,
+          'btn-lg btn-success': canPlay,
       }">{{ l.messages.Play ?? 'Play' }}</a>
     </div>
   `,

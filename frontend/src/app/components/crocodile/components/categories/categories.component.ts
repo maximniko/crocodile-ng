@@ -17,7 +17,7 @@ import {Localisation} from '../../../../services/localisation';
       @for (item of categories.categoriesSubject | async; track item.title; let idx = $index) {
         @let selected = categories.isSelected(item);
         <button class="d-flex btn btn-lg" [ngClass]="{
-          'tg-btn': selected,
+          'btn-success': selected,
           'btn-secondary': !selected,
       }" (click)="toggle(item)">
           <div class="my-auto">{{ idx + 1 }}</div>
