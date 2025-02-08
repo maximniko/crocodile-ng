@@ -55,7 +55,7 @@ import {Localisation} from '../../../../services/localisation';
       }
       <div class="d-flex justify-content-around flex-row-reverse">
         <div class="d-flex me-3">
-          <div class="m-auto text-primary">
+          <div class="m-auto">
             {{ l.messages.Step ?? 'Step' }} 2
           </div>
         </div>
