@@ -9,7 +9,7 @@ import {Localisation} from '../../../services/localisation';
   template: `
     <nav class="navbar navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" [routerLink]="routeCreator.main()">{{ l.messages.CrocodileGame ?? 'Crocodile Game' }}</a>
+        <a class="navbar-brand w-100 text-center me-0" [routerLink]="routeCreator.main()">{{ l.messages.CrocodileGame ?? 'Crocodile Game' }}</a>
       </div>
     </nav>
   `,

@@ -10,18 +10,23 @@ import {Localisation} from '../../../../services/localisation';
 @Component({
   standalone: true,
   template: `
-    @for (item of categories.categoriesSubject | async; track item.title; let idx = $index) {
-      @let selected = categories.isSelected(item);
-      <button class="d-flex btn btn-lg" [ngClass]="{
+    <div class="my-3">
+      <h2 class="h2 text-center mb-0 tg-color-accent">{{ l.messages.Categories ?? 'Categories' }}</h2>
+    </div>
+    <div class="d-flex flex-column gap-1 mb-3">
+      @for (item of categories.categoriesSubject | async; track item.title; let idx = $index) {
+        @let selected = categories.isSelected(item);
+        <button class="d-flex btn btn-lg" [ngClass]="{
           'btn-success': selected,
           'btn-secondary': !selected,
       }" (click)="toggle(item)">
-        <div class="my-auto">{{ idx + 1 }}</div>
-        <div class="m-auto">{{ item.title }}</div>
-      </button>
-    }
+          <div class="my-auto">{{ idx + 1 }}</div>
+          <div class="m-auto">{{ item.title }}</div>
+        </button>
+      }
+    </div>
   `,
-  host: {class: 'd-flex flex-column gap-1'},
+  host: {class: 'vstack'},
   imports: [NgClass, AsyncPipe]
 })
 export class CategoriesComponent implements OnInit, OnDestroy {

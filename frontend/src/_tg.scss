@@ -1,0 +1,41 @@
+.tg-bg-secondary {
+  //background: red;
+  background: var(--tg-theme-secondary-bg-color);
+}
+
+.tg-btn {
+  background: var(--tg-theme-button-color);
+  color: var(--tg-theme-button-text-color);
+}
+
+.tg-accent-bg-shadow {
+  box-shadow: 0px -0.5rem 1rem var(--tg-theme-accent-text-color);
+}
+
+.tg-accent-bg-shadow-bottom-left {
+  box-shadow: -0.2rem 0.2rem 0.5rem var(--tg-theme-accent-text-color);
+}
+
+.tg-accent-border, .form-select.tg-accent-border, .card.tg-accent-border {
+  border: solid 1px var(--tg-theme-accent-text-color);
+}
+
+.accent-border-top, .card.accent-border-top {
+  border-top: solid 3px var(--tg-theme-accent-text-color);
+}
+
+.tg-color-hint {
+  color: var(--tg-theme-hint-color);
+}
+
+.tg-color-accent, page-link.tg-color-accent {
+  color: var(--tg-theme-accent-text-color);
+}
+
+.tg-color-subtitle {
+  color: var(--tg-theme-subtitle-color);
+}
+
+.tg-color-destructive-text {
+  color: var(--tg-theme-destructive-text-color);
+}
