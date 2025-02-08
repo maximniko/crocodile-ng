@@ -8,6 +8,12 @@
   color: var(--tg-theme-button-text-color);
 }
 
+.tg-btn-outline {
+  border: 1px solid var(--tg-theme-button-color);
+  background: transparent;
+  color: var(--tg-theme-accent-text-color);
+}
+
 .tg-accent-bg-shadow {
   box-shadow: 0px -0.5rem 1rem var(--tg-theme-accent-text-color);
 }

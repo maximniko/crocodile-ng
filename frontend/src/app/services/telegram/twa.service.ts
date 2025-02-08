@@ -156,6 +156,10 @@ export class TwaService {
       console.log(e)
     }
   }
+
+  isFullscreen(): boolean {
+    return WebApp.isFullscreen ?? false
+  }
 }
 
 type BottomButtonParams = {
