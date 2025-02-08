@@ -75,7 +75,7 @@ import {Localisation} from '../../../../services/localisation';
         </div>
       </div>
     </div>
-    @let canPlay = !this.emptyPlayers() && !this.emptySelectedCategories();
+    @let canPlay = !emptyPlayers && !emptySelectedCategories;
     <div class="d-flex justify-content-center">
       <a class="btn rounded-5 w-75" [routerLink]="routeCreator.game()" [ngClass]="{
           'disabled btn-outline-secondary': !canPlay,
