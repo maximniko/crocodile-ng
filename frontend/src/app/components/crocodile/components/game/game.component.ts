@@ -93,7 +93,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
         {{ l.messages.RoundEnded ?? 'Round ended!' }}
       </div>
       <div class="btn-group btn-group-lg w-100">
-        <button class="btn btn-outline-primary" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
+        <button class="btn tg-btn-outline" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
         <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
@@ -141,7 +141,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
         }
       </div>
       <div class="btn-group btn-group-lg w-100">
-        <a class="btn btn-outline-primary" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
+        <a class="btn tg-btn-outline" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
         <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     }
