@@ -3,12 +3,12 @@
   background: var(--tg-theme-secondary-bg-color);
 }
 
-.tg-btn {
+.tg-btn, .tg-btn:active, .tg-btn:focus, .tg-btn:hover {
   background: var(--tg-theme-button-color);
   color: var(--tg-theme-button-text-color);
 }
 
-.tg-btn-outline {
+.tg-btn-outline, .tg-btn-outline:active, .tg-btn-outline:focus, .tg-btn-outline:hover {
   border: 1px solid var(--tg-theme-button-color);
   background: transparent;
   color: var(--tg-theme-accent-text-color);
