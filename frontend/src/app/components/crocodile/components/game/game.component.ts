@@ -68,7 +68,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
           @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
             @let isSelected = isWordSelected(word);
             <button class="d-flex btn btn-lg" [ngClass]="{
-          'btn-success': isSelected,
+          'tg-btn': isSelected,
           'btn-secondary': !isSelected,
       }" (click)="toggleWord(word)">
               <div class="my-auto">{{ idx + 1 }}</div>
@@ -94,7 +94,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
       </div>
       <div class="btn-group btn-group-lg w-100">
         <button class="btn tg-btn-outline" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
-        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+        <button class="btn tg-btn" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
       <div ngbAccordion class="mb-3">
@@ -142,7 +142,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
       </div>
       <div class="btn-group btn-group-lg w-100">
         <a class="btn tg-btn-outline" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
-        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+        <button class="btn tg-btn" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     }
   `,

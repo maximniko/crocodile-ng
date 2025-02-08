@@ -79,7 +79,7 @@ import {Localisation} from '../../../../services/localisation';
     <div class="d-flex justify-content-center">
       <a class="btn rounded-5 w-75" [routerLink]="routeCreator.game()" [ngClass]="{
           'disabled btn-outline-secondary': !canPlay,
-          'btn-lg tg-btn-outline': canPlay,
+          'btn-lg tg-btn': canPlay,
       }">{{ l.messages.Play ?? 'Play' }}</a>
     </div>
   `,
