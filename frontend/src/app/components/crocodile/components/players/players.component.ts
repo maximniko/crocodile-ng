@@ -25,12 +25,12 @@ import {Localisation} from '../../../../services/localisation';
         <button class="btn btn-lg btn-outline-secondary w-100" (click)="reset()">{{ l.messages.Reset ?? 'Reset' }}</button>
       </div>
       <div class="col">
-        <button class="btn btn-lg tg-btn-outline w-100" type="submit" [disabled]="form!.invalid"
+        <button class="btn btn-lg btn-outline-primary w-100" type="submit" [disabled]="form!.invalid"
                 (click)="onSubmit()">{{ l.messages.Save ?? 'Save' }}
         </button>
       </div>
       <div class="col-12">
-        <button class="btn btn-lg tg-btn w-100" (click)="addPlayer()">{{ l.messages.Add ?? 'Add' }}</button>
+        <button class="btn btn-lg btn-primary w-100" (click)="addPlayer()">{{ l.messages.Add ?? 'Add' }}</button>
       </div>
     </div>
     <form [formGroup]="form!">

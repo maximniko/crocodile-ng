@@ -30,7 +30,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
     }
 
     .text-bronze {
-      color: #cda132;
+      color: #b57117;
     }
   `,
   template: `
@@ -40,7 +40,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
       <div class="vstack gap-5">
         <div class="text-center h2">{{ l.messages.NextPlayer ?? 'Next player' }}</div>
         <div class="text-center h1">{{ currentPlayer.name }}</div>
-        <button class="btn btn-lg tg-btn" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
+        <button class="btn btn-lg btn-success" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
       </div>
     } @else if (state == State.PLAYING) {
       <div class="d-flex flex-column gap-3 gap-md-5">
@@ -68,7 +68,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
           @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
             @let isSelected = isWordSelected(word);
             <button class="d-flex btn btn-lg" [ngClass]="{
-          'tg-btn': isSelected,
+          'btn-success': isSelected,
           'btn-secondary': !isSelected,
       }" (click)="toggleWord(word)">
               <div class="my-auto">{{ idx + 1 }}</div>
@@ -79,7 +79,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
         </div>
         <div class="mb-3">
           @let isLastPlayer = isLastPlayerInRound();
-          <button class="btn btn-lg tg-btn w-100" (click)="isLastPlayer ? endRound() : nextPlayer()">
+          <button class="btn btn-lg btn-outline-success w-100" (click)="isLastPlayer ? endRound() : nextPlayer()">
             @if (isLastPlayer) {
               {{ l.messages.Round ?? 'Round!' }}
             } @else {
@@ -93,8 +93,8 @@ import {symbols} from '../../../_layout/symbols/symbols';
         {{ l.messages.RoundEnded ?? 'Round ended!' }}
       </div>
       <div class="btn-group btn-group-lg w-100">
-        <button class="btn tg-btn-outline" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
-        <button class="btn tg-btn" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+        <button class="btn btn-outline-success" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
       <div ngbAccordion class="mb-3">
@@ -141,8 +141,8 @@ import {symbols} from '../../../_layout/symbols/symbols';
         }
       </div>
       <div class="btn-group btn-group-lg w-100">
-        <a class="btn tg-btn-outline" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
-        <button class="btn tg-btn" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+        <a class="btn btn-outline-success" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     }
   `,
