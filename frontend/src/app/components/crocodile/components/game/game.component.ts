@@ -16,6 +16,7 @@ import {
 import {TwaService} from '../../../../services/telegram/twa.service';
 import {SoundService} from '../../../../services/sound.service';
 import {Localisation} from '../../../../services/localisation';
+import {symbols} from '../../../_layout/symbols/symbols';
 
 @Component({
   standalone: true,
@@ -36,41 +37,67 @@ import {Localisation} from '../../../../services/localisation';
     @if (state == State.LOADING) {
       {{ l.messages.Loading ?? 'Loading' }}
     } @else if (state == State.NEXT_PLAYER) {
-      <h2 class="text-center">{{ l.messages.NextPlayer ?? 'Next player' }}</h2>
-      <h1 class="text-center">{{ currentPlayer.name }}</h1>
-      <button class="btn btn-lg btn-warning d-inline-flex" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
+      <div class="vstack gap-5">
+        <div class="text-center h2">{{ l.messages.NextPlayer ?? 'Next player' }}</div>
+        <div class="text-center h1">{{ currentPlayer.name }}</div>
+        <button class="btn btn-lg tg-btn" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
+      </div>
     } @else if (state == State.PLAYING) {
-      <h1 class="text-center">{{ currentPlayer.name }}, {{ l.messages.show ?? 'show' }}</h1>
-      <div class="d-flex flex-column gap-1 h-100">
-        @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
-          @let isSelected = isWordSelected(word);
-          <button class="d-flex btn btn-lg" [ngClass]="{
+      <div class="d-flex flex-column gap-3 gap-md-5">
+        <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex">
+            <div class="m-auto h3">
+              {{ currentPlayer.name }}, {{ l.messages.show ?? 'show the words' }}
+            </div>
+          </div>
+          <div class="d-flex badge text-bg-warning">
+            <div class="m-auto">+</div>
+            <div class="m-auto">
+              <div class="position-relative">
+                <svg width="1.6rem" height="1.6rem">
+                  <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
+                </svg>
+                <div class="text-white m-auto position-absolute w-100 top-0">
+                  {{ currentRoundPoints }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-1">
+          @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
+            @let isSelected = isWordSelected(word);
+            <button class="d-flex btn btn-lg" [ngClass]="{
           'btn-success': isSelected,
           'btn-secondary': !isSelected,
       }" (click)="toggleWord(word)">
-            <div class="my-auto">{{ idx + 1 }}</div>
-            <div class="m-auto">{{ word.title }}</div>
-            <div class="sm-auto">{{ word.level }}</div>
+              <div class="my-auto">{{ idx + 1 }}</div>
+              <div class="m-auto">{{ word.title }}</div>
+              <div class="sm-auto">{{ word.level }}</div>
+            </button>
+          }
+        </div>
+        <div class="mb-3">
+          @let isLastPlayer = isLastPlayerInRound();
+          <button class="btn btn-lg tg-btn w-100" (click)="isLastPlayer ? endRound() : nextPlayer()">
+            @if (isLastPlayer) {
+              {{ l.messages.Round ?? 'Round!' }}
+            } @else {
+              {{ l.messages.NextPlayer ?? 'Next player!' }}
+            }
           </button>
-        }
+        </div>
       </div>
-      @let isLastPlayer = isLastPlayerInRound();
-      <button class="overflow-hidden btn btn-lg btn-warning"
-              (click)="isLastPlayer ? endRound() : nextPlayer()">
-        @if (isLastPlayer) {
-          {{ l.messages.Round ?? 'Round!' }}
-        } @else {
-          {{ l.messages.NextPlayer ?? 'Next player!' }}
-        }
-      </button>
     } @else if (state == State.END_ROUND) {
-      {{ l.messages.RoundEnded ?? 'Round ended!' }}
-      <div class="d-flex">
-        <button class="btn btn-lg btn-outline-primary" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
-        <button class="btn btn-lg btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+      <div class="h2 text-center mb-3">
+        {{ l.messages.RoundEnded ?? 'Round ended!' }}
+      </div>
+      <div class="btn-group btn-group-lg w-100">
+        <button class="btn btn-outline-primary" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
-      <div ngbAccordion>
+      <div ngbAccordion class="mb-3">
         @for (gamePlayerResult of gamePlayerResults; track gamePlayerResult.gamePlayer.player.name; let idx = $index) {
           <div ngbAccordionItem>
             <h2 ngbAccordionHeader>
@@ -91,17 +118,20 @@ import {Localisation} from '../../../../services/localisation';
               </button>
             </h2>
             <div ngbAccordionCollapse>
-              <div ngbAccordionBody>
+              <div class="p-2" ngbAccordionBody>
                 <ng-template>
                   <ul class="list-group">
                     @if (gamePlayerResult.gamePlayer.successWords.length) {
                       @for (word of gamePlayerResult.gamePlayer.successWords; track word.title) {
-                        <li class="list-group-item d-flex justify-content-between">
+                        <li class="list-group-item list-group-item-action d-flex justify-content-between">
                           <div class="ms-2 me-auto">{{ word.title }}</div>
                           <span class="badge text-bg-primary rounded-pill">{{ word.level }}</span>
                         </li>
                       }
                     } @else {
+                      <li class="list-group-item">
+                        {{ l.messages.ThereIsNothing ?? 'There is nothing.' }}
+                      </li>
                     }
                   </ul>
                 </ng-template>
@@ -110,13 +140,13 @@ import {Localisation} from '../../../../services/localisation';
           </div>
         }
       </div>
-      <div class="d-flex">
-        <a class="btn btn-lg btn-outline-primary w-100" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
-        <button class="btn btn-lg btn-success w-100" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+      <div class="btn-group btn-group-lg w-100">
+        <a class="btn btn-outline-primary" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     }
   `,
-  host: {class: 'd-flex flex-column gap-5'},
+  host: {class: 'h-100'},
   imports: [
     NgClass,
     RouterLink,
@@ -163,6 +193,16 @@ export class GameComponent implements OnInit, OnDestroy {
     this.router.navigate([routeCreator.main()])
   }
 
+  protected get currentRoundPoints(): number {
+    return this.currentGamePlayerSuccessWords
+      .filter(
+        word => this.currentGamePlayer.currentWords.findIndex(
+          currentWord => currentWord.title == word.title
+        ) != -1
+      )
+      .reduce<number>((acc, word: Word) => acc + word.level, 0)
+  }
+
   protected isLastPlayerInRound(): boolean {
     return this.gamePlayers.length == this.currentPlayerNo + 1
   }
@@ -206,23 +246,27 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.gamePlayers[this.currentPlayerNo];
   }
 
+  protected get currentGamePlayerSuccessWords(): Word[] {
+    return this.currentGamePlayer.successWords;
+  }
+
   protected toggleWord(word: Word) {
-    const index = this.gamePlayers[this.currentPlayerNo].successWords.indexOf(word),
+    const index = this.currentGamePlayerSuccessWords.indexOf(word),
       notExists = index == -1
 
     if (notExists) {
-      this.gamePlayers[this.currentPlayerNo].successWords.push(word)
+      this.currentGamePlayerSuccessWords.push(word)
       this.twa.hapticFeedbackNotificationOccurred("success")
       this.sound.playOn()
     } else {
-      this.gamePlayers[this.currentPlayerNo].successWords.splice(index, 1)
+      this.currentGamePlayerSuccessWords.splice(index, 1)
       this.twa.hapticFeedbackNotificationOccurred("warning")
       this.sound.playOff()
     }
   }
 
   protected isWordSelected(word: Word) {
-    return this.gamePlayers[this.currentPlayerNo].successWords.includes(word)
+    return this.currentGamePlayerSuccessWords.includes(word)
   }
 
   protected stars(count: number): string {
@@ -252,6 +296,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   protected readonly routeCreator = routeCreator;
   protected readonly State = State;
+  protected readonly symbols = symbols;
 }
 
 enum State {

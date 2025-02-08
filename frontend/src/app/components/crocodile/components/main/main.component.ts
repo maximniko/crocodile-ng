@@ -11,51 +11,73 @@ import {Localisation} from '../../../../services/localisation';
   standalone: true,
   template: `
     @let emptyPlayers = this.emptyPlayers();
-    <div class="justify-content-around d-flex" [ngClass]="{
-        'alert alert-success text-success': emptyPlayers,
+    <div class="vstack" [ngClass]="{
+        'alert alert-success mb-0 text-success': emptyPlayers,
         'text-primary': !emptyPlayers,
     }">
-      <div class="d-flex justify-content-center w-100">
-        <div class="m-auto">
-          {{ l.messages.Step ?? 'Step' }} 1
+      @if (emptyPlayers) {
+        <div class="d-flex justify-content-center">
+          <span class="text-center pb-1">{{ l.messages.SelectPlayers ?? 'Select players' }}</span>
         </div>
-      </div>
-      <div class="d-flex justify-content-center w-100">
-        <a [routerLink]="routeCreator.players()" class="btn btn-lg" [ngClass]="{
+      }
+      <div class="d-flex justify-content-around">
+        <div class="d-flex ms-3">
+          <div class="m-auto">
+            {{ l.messages.Step ?? 'Step' }} 1
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <a [routerLink]="routeCreator.players()" class="btn btn-lg" [ngClass]="{
         'btn-outline-primary': !emptyPlayers,
         'btn-outline-success': emptyPlayers,
         }">
-          {{ l.messages.Players ?? 'Players' }}
-          @let items = this.playersService.playersSubject | async;
-          @if (items?.length) {
-            <span class="badge text-bg-primary">{{ items?.length }}</span>
-          }
-        </a>
+            {{ l.messages.Players ?? 'Players' }}
+            @let items = this.playersService.playersSubject | async;
+            @if (items?.length) {
+              <span class="badge" [ngClass]="{
+                'text-bg-success': emptyPlayers,
+                'text-bg-primary': !emptyPlayers,
+                }">{{ items?.length }}</span>
+            }
+          </a>
+        </div>
       </div>
     </div>
     @let emptySelectedCategories = this.emptySelectedCategories();
-    <div class="justify-content-around d-flex flex-row-reverse" [ngClass]="{
-        'alert alert-success text-success': emptySelectedCategories,
+    <div class="vstack" [ngClass]="{
+        'alert alert-success mb-0 text-success': emptySelectedCategories,
         'text-primary': !emptySelectedCategories,
     }">
-      <div class="d-flex justify-content-center w-100">
-        <div class="m-auto">{{ l.messages.Step ?? 'Step' }} 2</div>
-      </div>
-      <div class="d-flex justify-content-center w-100">
-        <a [routerLink]="routeCreator.categories()" class="btn btn-lg" [ngClass]="{
-        'btn-outline-primary': !this.emptySelectedCategories(),
-        'btn-outline-success': this.emptySelectedCategories(),
+      @if (emptySelectedCategories) {
+        <div class="d-flex justify-content-center">
+          <span class="text-center pb-1">{{ l.messages.ChooseCategories ?? 'Choose categories' }}</span>
+        </div>
+      }
+      <div class="d-flex justify-content-around flex-row-reverse">
+        <div class="d-flex me-3">
+          <div class="m-auto">
+            {{ l.messages.Step ?? 'Step' }} 2
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <a [routerLink]="routeCreator.categories()" class="btn btn-lg" [ngClass]="{
+        'btn-outline-primary': !emptySelectedCategories,
+        'btn-outline-success': emptySelectedCategories,
         }">
-          {{ l.messages.Categories ?? 'Categories' }}
-          @if (this.categoriesService.selected.length) {
-            <span class="badge text-bg-primary">{{ this.categoriesService.selected.length }}</span>
-          }
-        </a>
+            {{ l.messages.Categories ?? 'Categories' }}
+            @if (this.categoriesService.selected.length) {
+              <span class="badge" [ngClass]="{
+                'text-bg-success': emptySelectedCategories,
+                'text-bg-primary': !emptySelectedCategories,
+                }">{{ this.categoriesService.selected.length }}</span>
+            }
+          </a>
+        </div>
       </div>
     </div>
     @let canPlay = !this.emptyPlayers() && !this.emptySelectedCategories();
-    <div class="d-flex px-4">
-      <a class="btn w-100" [routerLink]="routeCreator.game()" [ngClass]="{
+    <div class="d-flex justify-content-center">
+      <a class="btn rounded-5 w-75" [routerLink]="routeCreator.game()" [ngClass]="{
           'disabled btn-outline-secondary': !canPlay,
           'btn-lg btn-outline-success': canPlay,
       }">{{ l.messages.Play ?? 'Play' }}</a>

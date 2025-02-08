@@ -16,7 +16,7 @@ export class Localisation {
   }
 
   load() {
-    const locale = this.twa.getUserLanguageCode() ?? 'ru'
+    const locale = this.twa.getUserLanguageCode() ?? 'en'
 
     this.http.get<Messages>(`assets/messages/${locale}.json`)
       .subscribe({
@@ -61,8 +61,11 @@ export type Key =
   | "Step"
   | "Player"
   | "Players"
+  | "SelectPlayers"
   | "Categories"
   | "Add"
+  | "ChooseCategories"
+  | "ThereIsNothing"
   | "errRequired"
   | "errMinlength"
   | "errMaxlength"
