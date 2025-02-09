@@ -51,8 +51,15 @@ import {symbols} from '../../../_layout/symbols/symbols';
             </div>
           </div>
           <div class="d-flex badge text-bg-warning">
-            <div class="m-auto">+</div>
-            <div class="m-auto">
+            <div class="m-auto d-flex flex-column">
+              <div class="position-relative">
+                <svg width="1.6rem" height="1.6rem">
+                  <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
+                </svg>
+                <div class="m-auto fs-6 position-absolute w-100 top-0 bottom-0 h-100" style="line-height: 1.5rem">
+                  {{ currentGamePlayer.countReplace }}
+                </div>
+              </div>
               <div class="position-relative">
                 <svg width="1.6rem" height="1.6rem">
                   <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
@@ -67,14 +74,33 @@ import {symbols} from '../../../_layout/symbols/symbols';
         <div class="d-flex flex-column gap-1">
           @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
             @let isSelected = isWordSelected(word);
-            <button class="d-flex btn btn-lg" [ngClass]="{
+            <div class="btn-group">
+              <button type="button"
+                      class="btn btn-lg btn-warning p-0" [ngClass]="{
+                      'disabled': currentGamePlayer.countReplace < 1
+                      }"
+                      (click)="replaceWord(word)">
+                  <svg width="1.5rem" height="1.5rem">
+                    <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
+                  </svg>
+              </button>
+              <button class="d-flex btn btn-lg w-75" [ngClass]="{
           'btn-success': isSelected,
           'btn-secondary': !isSelected,
       }" (click)="toggleWord(word)">
-              <div class="my-auto">{{ idx + 1 }}</div>
-              <div class="m-auto">{{ word.title }}</div>
-              <div class="sm-auto">{{ word.level }}</div>
-            </button>
+                <div class="d-flex w-100">
+                  <div class="m-auto">{{ word.title }}</div>
+                  <div class="sm-auto d-flex">
+                    <div class="m-auto fs-5">+{{ word.level }}</div>
+                    <div class="m-auto ms-1">
+                      <svg width="1rem" height="1rem" class="text-warning">
+                        <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
           }
         </div>
         <div class="mb-3">
@@ -93,7 +119,9 @@ import {symbols} from '../../../_layout/symbols/symbols';
         {{ l.messages.RoundEnded ?? 'Round ended!' }}
       </div>
       <div class="btn-group btn-group-lg w-100">
-        <button class="btn btn-outline-success" (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}</button>
+        <button class="btn btn-outline-success"
+                (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}
+        </button>
         <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
       </div>
     } @else if (state == State.TO_RESULT) {
@@ -159,6 +187,7 @@ import {symbols} from '../../../_layout/symbols/symbols';
   ]
 })
 export class GameComponent implements OnInit, OnDestroy {
+  private countReplace = 3
   protected round: number = 1
   protected state: State = State.LOADING // 0 - show next player, 1 - do play, 2 - to play or to results
   private currentPlayerNo = 0
@@ -214,7 +243,7 @@ export class GameComponent implements OnInit, OnDestroy {
   protected nextPlayer() {
     this.currentPlayerNo = (this.currentPlayerNo + 1) % this.gamePlayers.length
     if (this.currentPlayerNo == 0) {
-      this.resetCurrentWords()
+      this.resetGamePlayers()
       this.round += 1
     }
     this.state = State.NEXT_PLAYER
@@ -249,6 +278,9 @@ export class GameComponent implements OnInit, OnDestroy {
   protected get currentGamePlayerSuccessWords(): Word[] {
     return this.currentGamePlayer.successWords;
   }
+  protected get currentGamePlayerCurrentWords(): Word[] {
+    return this.currentGamePlayer.currentWords;
+  }
 
   protected toggleWord(word: Word) {
     const index = this.currentGamePlayerSuccessWords.indexOf(word),
@@ -265,6 +297,17 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
+  protected replaceWord(word: Word) {
+    const index = this.currentGamePlayerCurrentWords.indexOf(word),
+      notExists = index == -1
+
+    if (notExists) {
+      return
+    }
+    this.currentGamePlayerCurrentWords[index] = this.gameWordsProvider.nextWords(1)[0]
+    this.currentGamePlayer.countReplace -= 1
+  }
+
   protected isWordSelected(word: Word) {
     return this.currentGamePlayerSuccessWords.includes(word)
   }
@@ -277,8 +320,9 @@ export class GameComponent implements OnInit, OnDestroy {
     return ''
   }
 
-  private resetCurrentWords() {
+  private resetGamePlayers() {
     this.gamePlayers.forEach((player: GamePlayer) => {
+      player.countReplace = this.countReplace
       player.currentWords = this.gameWordsProvider.nextWords(5)
     })
   }
@@ -287,6 +331,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.gamePlayers = this.playersService.players.map<GamePlayer>((player: Player) => {
       return {
         player: player,
+        countReplace: this.countReplace,
         successWords: [] as Word[],
         currentWords: this.gameWordsProvider.nextWords(5),
       }
@@ -334,6 +379,7 @@ class GameWordsProvider {
 }
 
 interface GamePlayer {
+  countReplace: number
   player: Player
   successWords: Word[]
   currentWords: Word[]
