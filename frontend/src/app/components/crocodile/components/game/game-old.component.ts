@@ -21,9 +21,6 @@ import {symbols} from '../../../_layout/symbols/symbols';
 @Component({
   standalone: true,
   styles: `
-    * {
-      color: white;
-    }
     .text-gold {
       color: #ffd63f;
     }
@@ -37,80 +34,78 @@ import {symbols} from '../../../_layout/symbols/symbols';
     }
   `,
   template: `
-    <main class="bg-purple h-100">
-      @if (state == State.LOADING) {
-        {{ l.messages.Loading ?? 'Loading' }}
-      } @else if (state == State.NEXT_PLAYER) {
-        <div class="container d-flex flex-column justify-content-around h-100">
-          <h2 class="text-center h2">{{ l.messages.NextPlayer ?? 'Next player' }}</h2>
-          <div class="text-center h1">{{ currentPlayer.name }}</div>
-          <button class="btn btn-lg btn-success" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
-        </div>
-      } @else if (state == State.PLAYING) {
-        <div class="container d-flex flex-column justify-content-around h-100">
-          <div class="d-flex flex-column gap-3 gap-md-5">
-            <div class="d-flex justify-content-between">
-              <div class="d-flex">
-                <div class="m-auto h3">
-                  {{ currentPlayer.name }}, {{ l.messages.show ?? 'show the words' }}
+    @if (state == State.LOADING) {
+      {{ l.messages.Loading ?? 'Loading' }}
+    } @else if (state == State.NEXT_PLAYER) {
+      <div class="vstack gap-5">
+        <div class="text-center h2">{{ l.messages.NextPlayer ?? 'Next player' }}</div>
+        <div class="text-center h1">{{ currentPlayer.name }}</div>
+        <button class="btn btn-lg btn-success" (click)="playing()">{{ l.messages.Start ?? 'Start!' }}</button>
+      </div>
+    } @else if (state == State.PLAYING) {
+      <div class="d-flex flex-column gap-3 gap-md-5">
+        <div class="d-flex justify-content-between mt-3">
+          <div class="d-flex">
+            <div class="m-auto h3">
+              {{ currentPlayer.name }}, {{ l.messages.show ?? 'show the words' }}
+            </div>
+          </div>
+          <div class="d-flex badge text-bg-warning">
+            <div class="m-auto d-flex flex-column">
+              <div class="position-relative">
+                <svg width="1.6rem" height="1.6rem">
+                  <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
+                </svg>
+                <div class="m-auto fs-6 position-absolute w-100 top-0 bottom-0 h-100" style="line-height: 1.5rem">
+                  {{ currentGamePlayer.countReplace }}
                 </div>
               </div>
-              <div class="d-flex badge text-bg-warning">
-                <div class="m-auto d-flex flex-column">
-                  <div class="position-relative">
-                    <svg width="1.6rem" height="1.6rem">
-                      <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
-                    </svg>
-                    <div class="m-auto fs-6 position-absolute w-100 top-0 bottom-0 h-100" style="line-height: 1.5rem">
-                      {{ currentGamePlayer.countReplace }}
-                    </div>
-                  </div>
-                  <div class="position-relative">
-                    <svg width="1.6rem" height="1.6rem">
-                      <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
-                    </svg>
-                    <div class="text-white m-auto position-absolute w-100 top-0">
-                      {{ currentRoundPoints }}
-                    </div>
-                  </div>
+              <div class="position-relative">
+                <svg width="1.6rem" height="1.6rem">
+                  <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
+                </svg>
+                <div class="text-white m-auto position-absolute w-100 top-0">
+                  {{ currentRoundPoints }}
                 </div>
               </div>
             </div>
-            <div class="d-flex flex-column gap-1">
-              @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
-                @let isSelected = isWordSelected(word);
-                <div class="btn-group">
-                  <button type="button"
-                          class="btn btn-lg btn-warning p-0" [ngClass]="{
+          </div>
+        </div>
+        <div class="d-flex flex-column gap-1">
+          @for (word of currentGamePlayer.currentWords; track word.title; let idx = $index) {
+            @let isSelected = isWordSelected(word);
+            <div class="btn-group">
+              <button type="button"
+                      class="btn btn-lg btn-warning p-0" [ngClass]="{
                       'disabled': currentGamePlayer.countReplace < 1
                       }"
-                          (click)="replaceWord(word)">
-                    <svg width="1.5rem" height="1.5rem">
-                      <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
-                    </svg>
-                  </button>
-                  <button class="d-flex btn btn-lg w-75" [ngClass]="{
+                      (click)="replaceWord(word)">
+                <svg width="1.5rem" height="1.5rem">
+                  <use [attr.xlink:href]="'#' + symbols.arrowRepeat"/>
+                </svg>
+              </button>
+              <button class="d-flex btn btn-lg w-75" [ngClass]="{
           'btn-success': isSelected,
           'btn-secondary': !isSelected,
       }" (click)="toggleWord(word)">
-                    <div class="d-flex w-100">
-                      <div class="m-auto">{{ word.title }}</div>
-                      <div class="sm-auto d-flex">
-                        <div class="m-auto fs-5">+{{ word.level }}</div>
-                        <div class="m-auto ms-1">
-                          <svg width="1rem" height="1rem" class="text-warning">
-                            <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
-                          </svg>
-                        </div>
-                      </div>
+                <div class="d-flex w-100">
+                  <div class="m-auto">{{ word.title }}</div>
+                  <div class="sm-auto d-flex">
+                    <div class="m-auto fs-5">+{{ word.level }}</div>
+                    <div class="m-auto ms-1">
+                      <svg width="1rem" height="1rem" class="text-warning">
+                        <use [attr.xlink:href]="'#' + symbols.trophyFill"/>
+                      </svg>
                     </div>
-                  </button>
+                  </div>
                 </div>
-              }
+              </button>
             </div>
-          </div>
+          }
+        </div>
+        <div class="mb-3">
           @let isLastPlayer = isLastPlayerInRound();
-          <button class="btn btn-lg btn-success w-100" (click)="isLastPlayer ? endRound() : nextPlayer()">
+          <button class="btn btn-lg btn-outline-success w-100" (click)="isLastPlayer ? endRound() : nextPlayer()">
             @if (isLastPlayer) {
               {{ l.messages.Round ?? 'Round!' }}
             } @else {
@@ -118,67 +113,68 @@ import {symbols} from '../../../_layout/symbols/symbols';
             }
           </button>
         </div>
-      } @else if (state == State.END_ROUND) {
-        <div class="h2 text-center mb-3">
-          {{ l.messages.RoundEnded ?? 'Round ended!' }}
-        </div>
-        <div class="btn-group btn-group-lg w-100">
-          <button class="btn btn-outline-success"
-                  (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}
-          </button>
-          <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
-        </div>
-      } @else if (state == State.TO_RESULT) {
-        <div ngbAccordion class="mb-3">
-          @for (gamePlayerResult of gamePlayerResults; track gamePlayerResult.gamePlayer.player.name; let idx = $index) {
-            <div ngbAccordionItem>
-              <h2 ngbAccordionHeader>
-                <button ngbAccordionButton>
-                  @let starsCount = 3 - idx;
-                  <div class="d-flex w-100" [ngClass]="{
+      </div>
+    } @else if (state == State.END_ROUND) {
+      <div class="h2 text-center mb-3">
+        {{ l.messages.RoundEnded ?? 'Round ended!' }}
+      </div>
+      <div class="btn-group btn-group-lg w-100">
+        <button class="btn btn-outline-success"
+                (click)="toResult()">{{ l.messages.SeeTheResults ?? 'See the results!' }}
+        </button>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+      </div>
+    } @else if (state == State.TO_RESULT) {
+      <div ngbAccordion class="mb-3">
+        @for (gamePlayerResult of gamePlayerResults; track gamePlayerResult.gamePlayer.player.name; let idx = $index) {
+          <div ngbAccordionItem>
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>
+                @let starsCount = 3 - idx;
+                <div class="d-flex w-100" [ngClass]="{
                   'text-gold': starsCount == 3,
                   'text-silver': starsCount == 2,
                   'text-bronze': starsCount == 1,
                   'text-secondary': starsCount < 1,
                   }">
-                    <span class="ms-2 me-auto"><b>{{ gamePlayerResult.gamePlayer.player.name }}</b></span>
-                    <div>
-                      <span class="me-2" [innerHTML]="stars(starsCount)"></span>
-                      <span class="badge text-bg-danger rounded-pill">{{ gamePlayerResult.sum }}</span>
-                    </div>
+                  <span class="ms-2 me-auto"><b>{{ gamePlayerResult.gamePlayer.player.name }}</b></span>
+                  <div>
+                    <span class="me-2" [innerHTML]="stars(starsCount)"></span>
+                    <span class="badge text-bg-danger rounded-pill">{{ gamePlayerResult.sum }}</span>
                   </div>
-                </button>
-              </h2>
-              <div ngbAccordionCollapse>
-                <div class="p-2" ngbAccordionBody>
-                  <ng-template>
-                    <ul class="list-group">
-                      @if (gamePlayerResult.gamePlayer.successWords.length) {
-                        @for (word of gamePlayerResult.gamePlayer.successWords; track word.title) {
-                          <li class="list-group-item list-group-item-action d-flex justify-content-between">
-                            <div class="ms-2 me-auto">{{ word.title }}</div>
-                            <span class="badge text-bg-primary rounded-pill">{{ word.level }}</span>
-                          </li>
-                        }
-                      } @else {
-                        <li class="list-group-item">
-                          {{ l.messages.ThereIsNothing ?? 'There is nothing.' }}
+                </div>
+              </button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div class="p-2" ngbAccordionBody>
+                <ng-template>
+                  <ul class="list-group">
+                    @if (gamePlayerResult.gamePlayer.successWords.length) {
+                      @for (word of gamePlayerResult.gamePlayer.successWords; track word.title) {
+                        <li class="list-group-item list-group-item-action d-flex justify-content-between">
+                          <div class="ms-2 me-auto">{{ word.title }}</div>
+                          <span class="badge text-bg-primary rounded-pill">{{ word.level }}</span>
                         </li>
                       }
-                    </ul>
-                  </ng-template>
-                </div>
+                    } @else {
+                      <li class="list-group-item">
+                        {{ l.messages.ThereIsNothing ?? 'There is nothing.' }}
+                      </li>
+                    }
+                  </ul>
+                </ng-template>
               </div>
             </div>
-          }
-        </div>
-        <div class="btn-group btn-group-lg w-100">
-          <a class="btn btn-outline-success" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
-          <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
-        </div>
-      }
-    </main>
+          </div>
+        }
+      </div>
+      <div class="btn-group btn-group-lg w-100">
+        <a class="btn btn-outline-success" [routerLink]="routeCreator.main()">{{ l.messages.ToMain ?? 'To main' }}</a>
+        <button class="btn btn-success" (click)="nextPlayer()">{{ l.messages.PlayAgain ?? 'Play again!' }}</button>
+      </div>
+    }
   `,
+  host: {class: 'h-100'},
   imports: [
     NgClass,
     RouterLink,
@@ -220,7 +216,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.twa.exitFullscreen()
     this.twa.offBackButton(this.goBack, false)
     this.initGamePlayers()
-    this.playersService.savePlayers([])
   }
 
   goBack(): void {
