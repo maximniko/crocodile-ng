@@ -74,6 +74,8 @@ export type Key =
   | "RulesOfTheGame"
   | "RulesOfTheGameYouCanTitle"
   | "RulesOfTheGameYouCanContent"
+  | "RulesOfTheGameYouCantTitle"
+  | "RulesOfTheGameYouCantContent"
   | "GameVariants"
   | "EveryManForHimself"
   | "EveryManForHimselfDesc"
