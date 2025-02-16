@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {TwaService} from './services/telegram/twa.service';
 import {SymbolsComponent} from './components/_layout/symbols/symbols.component';
+import {PlayersService} from './components/crocodile/services/players/players.service';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +13,19 @@ import {SymbolsComponent} from './components/_layout/symbols/symbols.component';
     <app-symbols/>
   `,
 })
-export class AppComponent implements OnInit {
-  constructor(private twa: TwaService) {
+export class AppComponent implements OnInit, OnDestroy {
+  constructor(
+    private twa: TwaService,
+    private playersService: PlayersService
+  ) {
   }
 
   ngOnInit() {
     this.twa.ready()
     this.twa.expand()
+  }
+
+  ngOnDestroy() {
+    this.playersService.savePlayers([])
   }
 }

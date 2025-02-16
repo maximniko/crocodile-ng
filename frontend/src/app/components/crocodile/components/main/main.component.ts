@@ -31,7 +31,7 @@ import {Localisation} from '../../../../services/localisation';
 
     .how-to-play {
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .btn-play {
