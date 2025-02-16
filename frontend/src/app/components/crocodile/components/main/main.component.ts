@@ -2,89 +2,68 @@ import {Component, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
 import {PlayersService} from '../../services/players/players.service';
-import {AsyncPipe, NgClass} from '@angular/common';
 import {CategoriesService} from '../../services/categories/categories.service';
 import {TwaService} from '../../../../services/telegram/twa.service';
 import {Localisation} from '../../../../services/localisation';
 
 @Component({
   standalone: true,
-  template: `
-    @let emptyPlayers = this.emptyPlayers();
-    <div class="vstack" [ngClass]="{
-        'alert alert-success mb-0 text-success': emptyPlayers,
-        'text-primary': !emptyPlayers,
-    }">
-      @if (emptyPlayers) {
-        <div class="d-flex justify-content-center">
-          <span class="text-center pb-1">{{ l.messages.SelectPlayers ?? 'Select players' }}</span>
-        </div>
-      }
-      <div class="d-flex justify-content-around">
-        <div class="d-flex ms-3">
-          <div class="m-auto">
-            {{ l.messages.Step ?? 'Step' }} 1
-          </div>
-        </div>
-        <div class="d-flex justify-content-center">
-          <a [routerLink]="routeCreator.players()" class="btn btn-lg" [ngClass]="{
-        'btn-outline-primary': !emptyPlayers,
-        'btn-outline-success': emptyPlayers,
-        }">
-            {{ l.messages.Players ?? 'Players' }}
-            @let items = this.playersService.playersSubject | async;
-            @if (items?.length) {
-              <span class="badge" [ngClass]="{
-                'text-bg-success': emptyPlayers,
-                'text-bg-primary': !emptyPlayers,
-                }">{{ items?.length }}</span>
-            }
-          </a>
-        </div>
-      </div>
-    </div>
-    @let emptySelectedCategories = this.emptySelectedCategories();
-    <div class="vstack" [ngClass]="{
-        'alert alert-success mb-0 text-success': emptySelectedCategories,
-        'text-primary': !emptySelectedCategories,
-    }">
-      @if (emptySelectedCategories) {
-        <div class="d-flex justify-content-center">
-          <span class="text-center pb-1">{{ l.messages.ChooseCategories ?? 'Choose categories' }}</span>
-        </div>
-      }
-      <div class="d-flex justify-content-around flex-row-reverse">
-        <div class="d-flex me-3">
-          <div class="m-auto">
-            {{ l.messages.Step ?? 'Step' }} 2
-          </div>
-        </div>
-        <div class="d-flex justify-content-center">
-          <a [routerLink]="routeCreator.categories()" class="btn btn-lg" [ngClass]="{
-        'btn-outline-primary': !emptySelectedCategories,
-        'btn-outline-success': emptySelectedCategories,
-        }">
-            {{ l.messages.Categories ?? 'Categories' }}
-            @if (this.categoriesService.selected.length) {
-              <span class="badge" [ngClass]="{
-                'text-bg-success': emptySelectedCategories,
-                'text-bg-primary': !emptySelectedCategories,
-                }">{{ this.categoriesService.selected.length }}</span>
-            }
-          </a>
-        </div>
-      </div>
-    </div>
-    @let canPlay = !emptyPlayers && !emptySelectedCategories;
-    <div class="d-flex justify-content-center">
-      <a class="btn rounded-5 w-75" [routerLink]="routeCreator.game()" [ngClass]="{
-          'disabled btn-outline-secondary': !canPlay,
-          'btn-lg btn-success': canPlay,
-      }">{{ l.messages.Play ?? 'Play' }}</a>
-    </div>
+  styles: `
+    .title {
+      position: relative;
+      font-size: 3rem;
+      text-align: center;
+      z-index: 2;
+      color: transparent;
+      background: linear-gradient(#80f, green, #80f);
+      background-clip: text;
+      text-decoration: underline;
+      font-family: sans-serif;
+    }
+
+    .sub-title {
+      color: white;
+      text-shadow: 1px 1px 4px black;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .how-to-play {
+      position: relative;
+      z-index: 3;
+    }
+
+    .btn-play {
+      z-index: 4;
+    }
   `,
-  host: {class: 'd-flex flex-column gap-5'},
-  imports: [RouterLink, NgClass, AsyncPipe]
+  template: `
+    <main class="h-100 overflow-hidden position-relative bg-purple">
+      <div class="position-absolute h-100 w-100">
+        <img src="assets/images/palm.svg" alt="palm" class="palm">
+        <img src="assets/images/umbrella.svg" alt="umbrella" class="umbrella">
+      </div>
+      <div class="container d-flex flex-column justify-content-around h-100">
+        <div>
+          <h1 class="h1 title">Крокодил</h1>
+          <h4 class="h4 sub-title">игра для всей семьи</h4>
+        </div>
+        <div class="ms-3">
+          <a class="btn btn-lg btn-white btn-outline-secondary how-to-play mb-5" [routerLink]="routeCreator.howToPlay()">
+            Как играть?
+          </a>
+        </div>
+        <div class="d-flex justify-content-center position-relative">
+          <img src="assets/images/sand.svg" alt="sand" class="position-absolute">
+          <a class="btn btn-lg btn-play btn-success my-3" [routerLink]="routeCreator.players()">Играть!</a>
+        </div>
+      </div>
+    </main>
+  `,
+  imports: [
+    RouterLink
+  ]
 })
 export class MainComponent implements OnInit {
   constructor(
@@ -97,14 +76,6 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.twa.visibleBackButton(false)
-  }
-
-  protected emptyPlayers(): boolean {
-    return this.playersService.players.length === 0
-  }
-
-  protected emptySelectedCategories(): boolean {
-    return this.categoriesService.selected.length === 0
   }
 
   protected readonly routeCreator = routeCreator;

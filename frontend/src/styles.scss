@@ -2,6 +2,85 @@
 @use "common";
 @use "tg";
 
+body {
+  font-family: sans-serif;
+}
+
+.bg-purple {
+  background: #A26BC6
+}
+
+.bg-overlay {
+  background: rgba(0,0,0,.4);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 4;
+}
+
+.btn-white {
+  color: white;
+  text-shadow: 1px 1px 4px black;
+  border: 1px solid white;
+}
+
+.btn.btn-white:hover {
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+}
+
+.sand {
+  position: absolute;
+  height: 100%;
+  bottom: -70%;
+  left: -55%;
+  z-index: 1;
+}
+
+.palm {
+  height: 100%;
+  position: absolute;
+  right: -60%;
+  z-index: 2;
+}
+
+.umbrella {
+  height: 50%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+}
+
+@media(min-width: 576px) {
+  .palm {
+    right: -30%;
+  }
+  .sand {
+    left: -40%;
+  }
+}
+
+@media(min-width: 768px) {
+  .palm {
+    right: -20%;
+  }
+  .sand {
+    left: -20%;
+  }
+}
+
+@media(min-width: 992px) {
+  .palm {
+    right: -10%;
+  }
+  .sand {
+    width: 100%;
+    left: inherit;
+  }
+}
+
 .bi {
   width: 1em;
   height: 1em

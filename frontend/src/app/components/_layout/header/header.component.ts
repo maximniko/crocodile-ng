@@ -19,13 +19,13 @@ import {NgClass} from '@angular/common';
       opacity: 0;
     }`,
   template: `
-    <nav class="navbar navbar-dark bg-dark transition" [ngClass]="{
-    'hide': isHide
-    }">
-      <div class="container">
-        <a class="navbar-brand w-100 text-center me-0" [routerLink]="routeCreator.main()">{{ l.messages.CrocodileGame ?? 'Crocodile Game' }}</a>
-      </div>
-    </nav>
+<!--    <nav class="navbar navbar-dark bg-dark transition" [ngClass]="{-->
+<!--    'hide': isHide-->
+<!--    }">-->
+<!--      <div class="container">-->
+<!--        <a class="navbar-brand w-100 text-center me-0" [routerLink]="routeCreator.main()">{{ l.messages.CrocodileGame ?? 'Crocodile Game' }}</a>-->
+<!--      </div>-->
+<!--    </nav>-->
   `,
   imports: [RouterLink, NgClass]
 })
