@@ -1,5 +1,8 @@
-import {Component} from '@angular/core';
-import {NgbScrollSpy, NgbScrollSpyFragment, NgbScrollSpyItem} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+import {routeCreator} from "../crocodile.routes";
+import {TwaService} from "../../../services/telegram/twa.service";
+import {Localisation} from "../../../services/localisation";
 
 @Component({
   standalone: true,
@@ -7,11 +10,6 @@ import {NgbScrollSpy, NgbScrollSpyFragment, NgbScrollSpyItem} from '@ng-bootstra
     * {
       color: #e5efff;
     }
-
-    .title {
-      text-align: center;
-    }
-
     .rule {
       display: block;
       color: yellow;
@@ -22,29 +20,37 @@ import {NgbScrollSpy, NgbScrollSpyFragment, NgbScrollSpyItem} from '@ng-bootstra
       <div class="container pt-5">
         <div class="row py-3">
           <div class="col">
-            <h2 class="h2 title">Описание</h2>
-            <p class="fs-5 fs-md-4">Это игра "пантомима". Чтоб справиться со всеми задачами нужно хорошо владеть собственным телом и мимикой.
-              Это идеальная игра для любой компании. Главное - соберите друзей или семью, включите фантазию, смекалку и
-              артистизм. И не вероятно веселое времяпрепровождение гарантировано!</p>
-            <h2 class="h2 title">Правила игры</h2>
-            <p class="fs-5 fs-md-4"><span class="rule">Показывая слово, вы можете:</span> двигать любой частью своего тела — хоть ушами;
-              принимать любые позы — вплоть до стояния на голове; отвечать на вопросы отгадывающих, жестами; рисовать жестами на стене или другой плоской
-              поверхности; указывать на свою одежду, украшения и другие вещи, которые оказались при вас, когда вы пошли
-              показывать слово; показывать словосочетание в несколько приемов, разбив его на отдельные слова.</p>
-            <h2 class="h2 title">Варианты игры</h2>
-            <p class="fs-5 fs-md-4"><span class="rule">Каждый сам за себя</span> Игрок показывает слова со своей карточки. Каждое правильно
-              угаданное слово приносит баллы, которые указаны на карточке рядом с каждым словом. Побеждает игрок, набравший наибольшее
-              количество баллов.</p>
-            <p class="fs-5 fs-md-4"><span class="rule">Командная игра</span> Индивидуальная игра подходит для первого знакомства с «Крокодилом»,
-              но настоящий интерес и веселье раскрываются, когда играют команды. Соревнуясь команда против команды, вы не
-              только развиваете командный дух, но и учитесь понимать своих партнеров по игре с полуслова. Если в вашей компании
-              более шести человек, рекомендуется разделиться на две, три или даже больше команд.</p>
+            <h2 class="h2 text-center">{{ l.messages.Description ?? 'Description' }}</h2>
+            <p class="fs-5 fs-md-4">{{ l.messages.DescriptionContent ?? 'This is a game of "pantomime". To cope with all the tasks you need to have good control over your own body and facial expressions. This is an ideal game for any company. The main thing is to gather friends or family, turn on your imagination, ingenuity and artistry. And an incredibly fun pastime is guaranteed!' }}</p>
+            <h2 class="h2 text-center">{{ l.messages.RulesOfTheGame ?? 'Rules of the game' }}</h2>
+            <p class="fs-5 fs-md-4"><span class="rule">{{ l.messages.RulesOfTheGameYouCanTitle ?? 'By showing the word you can:' }}</span> {{ l.messages.RulesOfTheGameYouCanContent ?? "move any part of your body, even your ears; take any pose, even standing on your head; answer the guessers' questions with gestures; draw with gestures on the wall or other flat surface; point to your clothes, jewelry, and other things that you had with you when you went to show the word; show the phrase in several stages, breaking it down into separate words." }}</p>
+            <h2 class="h2 text-center">{{ l.messages.GameVariants ?? 'By showing the word you can:' }}</h2>
+            <p class="fs-5 fs-md-4"><span class="rule">{{ l.messages.EveryManForHimself ?? 'Every man for himself' }}</span> {{ l.messages.EveryManForHimselfDesc ?? 'The player shows the words from his card. Each correctly guessed word brings points, which are indicated on the card next to each word. The player with the most points wins.' }}</p>
+            <p class="fs-5 fs-md-4"><span class="rule">{{ l.messages.TeamPlay ?? 'Team play' }}</span> {{ l.messages.TeamPlayDesc ?? 'The player shows the words from his card. Each correctly guessed word brings points, which are indicated on the card next to each word. The player with the most points wins.' }}</p>
           </div>
         </div>
       </div>
     </main>
   `
 })
-export class HowToPlayComponent {
+export class HowToPlayComponent implements OnInit, OnDestroy {
+    constructor(
+        private router: Router,
+        private twa: TwaService,
+        protected l: Localisation,
+    ) {
+        this.goBack = this.goBack.bind(this)
+    }
 
+    ngOnInit(): void {
+        this.twa.backButtonOnClick(this.goBack)
+    }
+
+    ngOnDestroy(): void {
+        this.twa.offBackButton(this.goBack, false)
+    }
+
+    goBack() {
+        this.router.navigate([routeCreator.main()])
+    }
 }

@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {routeCreator} from '../../crocodile.routes';
-import {PlayersService} from '../../services/players/players.service';
-import {CategoriesService} from '../../services/categories/categories.service';
 import {TwaService} from '../../../../services/telegram/twa.service';
 import {Localisation} from '../../../../services/localisation';
 
@@ -46,31 +44,27 @@ import {Localisation} from '../../../../services/localisation';
       </div>
       <div class="container d-flex flex-column justify-content-around h-100">
         <div>
-          <h1 class="h1 title">Крокодил</h1>
-          <h4 class="h4 sub-title">игра для всей семьи</h4>
+          <h1 class="h1 title">{{ l.messages.Crocodile ?? 'Crocodile' }}</h1>
+          <h4 class="h4 sub-title">{{ l.messages.CrocodileSub ?? 'game for the whole family' }}</h4>
         </div>
         <div class="ms-3">
           <a class="btn btn-lg btn-white btn-outline-secondary how-to-play mb-5" [routerLink]="routeCreator.howToPlay()">
-            Как играть?
+            {{ l.messages.HowToPlay ?? 'How to play?' }}
           </a>
         </div>
         <div class="d-flex justify-content-center position-relative">
           <img src="assets/images/sand.svg" alt="sand" class="position-absolute">
-          <a class="btn btn-lg btn-play btn-success my-3" [routerLink]="routeCreator.players()">Играть!</a>
+          <a class="btn btn-lg btn-play btn-success my-3" [routerLink]="routeCreator.players()">{{ l.messages.Play ?? 'Play' }}</a>
         </div>
       </div>
     </main>
   `,
-  imports: [
-    RouterLink
-  ]
+  imports: [RouterLink]
 })
 export class MainComponent implements OnInit {
   constructor(
     protected twa: TwaService,
     protected l: Localisation,
-    protected playersService: PlayersService,
-    protected categoriesService: CategoriesService,
   ) {
   }
 
